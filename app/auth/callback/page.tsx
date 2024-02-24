@@ -31,9 +31,7 @@ export default function Home() {
       ) : (
         <>
           <Spinner size={50} color="#0055D6" />
-          <p className="text-sm text-info font-medium">
-            Loading profile details...
-          </p>
+          <p className="text-sm text-info font-medium">Loading profile...</p>
         </>
       )}
     </main>
