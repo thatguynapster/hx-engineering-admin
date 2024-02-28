@@ -1,4 +1,4 @@
-import { isValidPhoneNumber, isPossiblePhoneNumber } from "react-phone-number-input"; // prettier-ignore
+// import { isValidPhoneNumber, isPossiblePhoneNumber } from "react-phone-number-input"; // prettier-ignore
 import { string, number, mixed, array, StringSchema, NumberSchema, MixedSchema } from 'yup'; // prettier-ignore
 // import { MixedSchema } from 'yup/lib/mixed';
 
@@ -31,19 +31,19 @@ export const requireNumber = (
 /**
  * validation object for phone number
  */
-export const requirePhoneNumber = (
-  field: string,
-  required = true,
-  schema: StringSchema = string()
-) => {
-  return schema.test("isValidPhone", `Enter a valid ${field}`, (value) => {
-    value = value ? phoneNumberFormat(value, true) : value;
+// export const requirePhoneNumber = (
+//   field: string,
+//   required = true,
+//   schema: StringSchema = string()
+// ) => {
+//   return schema.test("isValidPhone", `Enter a valid ${field}`, (value) => {
+//     value = value ? phoneNumberFormat(value, true) : value;
 
-    return value
-      ? isValidPhoneNumber(value) && isPossiblePhoneNumber(value)
-      : !required;
-  });
-};
+//     return value
+//       ? isValidPhoneNumber(value) && isPossiblePhoneNumber(value)
+//       : !required;
+//   });
+// };
 
 /**
  * validation object for conditions
@@ -174,7 +174,7 @@ export const requirePassword = (
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/,
       "Must contain a lower case and upper case letter and number"
     )
-    .min(10, "Password must be at least 10 characters");
+    .min(8, "Password must be at least 8 characters");
 
   return required ? schema.required(`${field} is required`) : schema;
 };

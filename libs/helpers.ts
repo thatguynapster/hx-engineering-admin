@@ -13,3 +13,7 @@ export const phoneNumberFormat = (phone: string, reverse?: boolean) => {
     return phone?.startsWith("+") ? phone.replace("+", "") : phone;
   }
 };
+
+export const sentenceCase = (str: string) => {
+  return str.toLowerCase().charAt(0).toUpperCase() + str.slice(1);
+};

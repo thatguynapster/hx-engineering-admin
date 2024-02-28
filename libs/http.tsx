@@ -18,7 +18,7 @@ http.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 });
 
 http.interceptors.response.use(
-  (response: AxiosResponse) => response.data.responses,
+  (response: AxiosResponse) => response.data.response,
   (error: AxiosError<string>) => {
     if (error.response?.status !== 500) {
       if (error.response?.status === 401) {

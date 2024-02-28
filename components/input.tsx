@@ -21,7 +21,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           "text-sm h-full w-full px-4",
           "bg-transparent !outline-0 !outline-none !border-0 rounded-md",
           "disabled:bg-neutral-50 disabled:text-neutral-400",
-          "placeholder:text-neutral-400 placeholder:text-xl"
+          "placeholder:text-neutral-400"
         )}
         {...props}
       />
