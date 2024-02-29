@@ -44,7 +44,7 @@ export function Group({
         <label
           htmlFor={name}
           className={classNames(
-            "text-xs mb-1 font-medium block",
+            "text-xs mb-1 font-medium block text-neutral-40 dark:text-neutral-30",
             labelClassName
           )}
         >
@@ -60,7 +60,9 @@ export function Group({
           "border border-dark",
           "focus-within:border-primary",
           "min-h-12",
-          disabled ? "bg-neutral-50 pointer-events-none" : "bg-white",
+          disabled
+            ? "bg-neutral-50 pointer-events-none"
+            : "bg-white dark:bg-neutral-gray dark:border-0",
           containerClassName
         )}
       >

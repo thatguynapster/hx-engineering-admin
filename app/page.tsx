@@ -32,8 +32,14 @@ export default function Home() {
 
   return (
     <main className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-64 min-h-screen">
-      <div className="w-[155px] lg:w-[311px] h-[132px] lg:h-[264px] relative">
-        <Image src={"/img/logo.png"} alt={"HX logo"} fill />
+      <div className="w-[156px] lg:w-[312px] h-[124px] lg:h-[248px] relative">
+        <Image
+          src={"/img/logo.png"}
+          alt={"HX logo"}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw"
+          priority
+        />
       </div>
       <div className="flex flex-col gap-6 w-[360px]">
         <div className="flex flex-col gap-3">
@@ -93,7 +99,7 @@ export default function Home() {
                 </p> */}
 
                 <Button
-                  className="flex gap-3 justify-center bg-primary text-white !py-2.5 rounded-md font-medium"
+                  className="flex gap-3 justify-center bg-info text-white !py-2.5 rounded-md font-medium"
                   {...{ isSubmitting }}
                   type="submit"
                 >
