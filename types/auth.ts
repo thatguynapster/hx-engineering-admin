@@ -15,10 +15,9 @@ export type IUserResponse = {
   _id: Types.ObjectId;
   name: string;
   email: string;
-  password: null;
+  role: string;
   is_deleted: boolean;
   is_dev: boolean;
   createdAt: string;
   updatedAt: string;
-  role: string;
 };

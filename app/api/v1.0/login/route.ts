@@ -73,7 +73,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       {
         success: true,
         message: "Login successful",
-        // response: { ...user, password: null, token },
       },
       { status: 200 }
     );
@@ -92,7 +91,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      password: null,
       is_deleted: user.is_deleted,
       is_dev: user.is_dev,
       role: "",

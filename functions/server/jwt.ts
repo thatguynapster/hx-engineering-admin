@@ -1,10 +1,10 @@
-import { IUser, IUserResponse } from "@/types";
-import { jwtVerify, JWTPayload, decodeJwt } from "jose";
+import { IUserResponse } from "@/types";
+import { jwtVerify, JWTPayload } from "jose";
 import { Types } from "mongoose";
 import { cookies } from "next/headers";
 
 export function getJwtSecretKey() {
-  const secret = process.env.JWT_SECRET_512;
+  const secret = process.env.JWT_SECRET;
 
   if (!secret) {
     throw new Error("JWT Secret key is not set");
@@ -41,7 +41,6 @@ export async function getJwt() {
           role: payload.role as string,
           is_deleted: payload.is_deleted as boolean,
           is_dev: payload.is_dev as boolean,
-          password: null,
           createdAt: payload.createdAt as string,
           updatedAt: payload.updatedAt as string,
         };
