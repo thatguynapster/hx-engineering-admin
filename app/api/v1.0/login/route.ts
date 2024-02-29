@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     const user = (await UserCollection.findOne({
       email: loginBody.email,
       is_deleted: false,
-      is_dev: process.env.NODE_ENV === "development",
+      is_dev: process.env.ENVIRONMENT === "development",
     }).lean()) as IUser;
 
     if (!user) {

@@ -18,7 +18,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     const existingUser = await UserCollection.findOne({
       email: registerBody.email,
       is_deleted: false,
-      is_dev: process.env.NODE_ENV === "development",
+      is_dev: process.env.ENVIRONMENT === "development",
     });
     if (existingUser) {
       return NextResponse.json(
@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       ...registerBody,
       _id: new mongoose.Types.ObjectId(),
       is_deleted: false,
-      is_dev: process.env.NODE_ENV === "development",
+      is_dev: process.env.ENVIRONMENT === "development",
     }).save();
 
     const token = await new SignJWT({
