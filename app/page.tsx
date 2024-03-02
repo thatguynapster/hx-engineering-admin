@@ -1,12 +1,12 @@
 "use client";
 
 import { Form, Formik } from "formik";
-import Image from "next/image";
 import { object } from "yup";
 
-import { Button, Group, Input } from "@/components";
+import { Button, FormError, FormSuccess, Group, Input } from "@/components";
 import { schema } from "@/libs";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 export default function Home() {
   interface FormData {
@@ -14,13 +14,15 @@ export default function Home() {
     password: string;
   }
 
+  const [error, setError] = useState<string>("");
+
   const login = async (values: FormData) => {
     const { email, password } = values; // Destructure the required fields
     try {
       // await loginUserService({ email, password }); // Pass only the required fields
       // router.push("/dashboard/inventory");
     } catch (error: any) {
-      toast.error(error.message ?? "Failed to log in");
+      setError(error.message ?? "Failed to log in");
       console.error(error);
     }
   };
@@ -77,6 +79,8 @@ export default function Home() {
                   placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                 />
               </Group>
+
+              <FormError message={error} />
 
               <Button
                 className="flex gap-3 justify-center bg-info text-white !py-2.5 rounded-md font-medium"
