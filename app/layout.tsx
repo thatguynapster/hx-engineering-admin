@@ -19,8 +19,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* <Toaster position="top-right" toastOptions={{ duration: 5000 }} /> */}
       <body className={inter.className}>
+        <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
         <main className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-64 min-h-screen">
           <div className="w-[156px] lg:w-[312px] h-[124px] lg:h-[248px] relative">
             <Image
