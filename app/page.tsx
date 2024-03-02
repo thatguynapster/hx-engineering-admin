@@ -22,8 +22,7 @@ export default function Home() {
     const { email, password } = values; // Destructure the required fields
     try {
       await loginUserService({ email, password }); // Pass only the required fields
-      toast.success("Login successful. Loading panel...");
-      router.push("/dashboard/products");
+      router.push("/dashboard/inventory");
     } catch (error: any) {
       toast.error(error.message ?? "Failed to log in");
       console.error(error);

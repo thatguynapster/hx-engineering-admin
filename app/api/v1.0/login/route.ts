@@ -66,7 +66,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime(`1h`)
+      .setExpirationTime(`6h`)
       .sign(getJwtSecretKey());
 
     const response = NextResponse.json(
@@ -81,7 +81,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       name: "token",
       value: token,
       path: "/",
-      maxAge: 86400,
+      maxAge: 21_600, // 6 hours
       httpOnly: true,
       sameSite: "strict",
       secure: true,

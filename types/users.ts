@@ -12,3 +12,8 @@ export type IUser = {
   createdAt: string;
   updatedAt: string;
 };
+
+export interface Role {
+  _id?: string;
+  name: string;
+}

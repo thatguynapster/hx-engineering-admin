@@ -81,7 +81,7 @@ export function setUserDataCookie(userData: IUserResponse) {
     name: "userData",
     value: JSON.stringify(userData),
     path: "/",
-    maxAge: 86400, // 24 hours
+    maxAge: 21_600, // 6 hours
     sameSite: "strict",
   });
 }
