@@ -1,5 +1,7 @@
-import { Icons } from "@/components";
+import { UsersIcon } from "@heroicons/react/24/outline";
+
 import { sidebarInterface } from "@/types/ui/sidebar";
+import { Icons } from "@/components";
 
 export const navItems: sidebarInterface[] = [
   // {
@@ -19,7 +21,7 @@ export const navItems: sidebarInterface[] = [
   },
   {
     name: "Team",
-    icon: Icons.Team,
+    icon: UsersIcon,
     link: "/dashboard/team",
   },
 ];
