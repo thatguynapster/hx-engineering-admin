@@ -1,5 +1,17 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'; // prettier-ignore
 
+let store: any;
+let logout: any;
+
+// injects
+export const injectStore = (_store: any) => {
+  store = _store;
+};
+
+export const injectLogout = (_logout: any) => {
+  logout = _logout;
+};
+
 export const http = axios.create({
   timeout: 1000 * 60 * 5,
   baseURL: process.env["NEXT_PUBLIC_BASE_API"],
@@ -10,6 +22,26 @@ export const http = axios.create({
 });
 
 http.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const [token] = (() => {
+    const _store = localStorage.getItem(
+      String(process.env["NEXT_PUBLIC_STORAGE_KEY"])
+    );
+
+    if (_store || store) {
+      const st = _store && JSON.parse(_store);
+
+      return [store?.token || st?.token];
+    }
+
+    return [];
+  })();
+
+  if (config.headers) {
+    if (token) {
+      config.headers["authorization"] = `Bearer ${token}`;
+    }
+  }
+
   config.params = {
     ...config.params,
   };
@@ -36,4 +68,7 @@ http.interceptors.response.use(
   }
 );
 
-export default http;
+export default Object.assign(http, {
+  injectStore,
+  injectLogout,
+});

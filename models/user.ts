@@ -7,7 +7,7 @@ import {
   models,
 } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-import argon2 from "argon2";
+import bcrypt from "bcryptjs";
 
 import { IUser } from "@/types";
 
@@ -35,7 +35,7 @@ userSchema.pre("save", async function (next) {
   const user = this;
 
   if (this.isModified("password") || this.isNew) {
-    user.password = await argon2.hash(user.password);
+    user.password = await bcrypt.hash(user.password, 10);
     next();
   }
 

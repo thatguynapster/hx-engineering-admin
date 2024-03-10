@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         primary: "#00AEEF",
-        success: "027A48#027A48",
+        success: "#027A48",
         error: "#B42318",
         warning: "#F79009",
         info: "#0055D6",

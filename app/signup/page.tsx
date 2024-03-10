@@ -6,26 +6,30 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { object, ref } from "yup";
-import { Button, Group, Input } from "@/components";
+import { Button, FormError, FormSuccess, Group, Input } from "@/components";
 import { createUserService } from "@/services/auth";
+import { useState } from "react";
+
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const Home = () => {
   const router = useRouter();
 
-  interface FormData {
-    name: string;
-    email: string;
-    password: string;
-  }
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
 
   const signup = async (values: FormData) => {
     const { name, email, password } = values; // Destructure the required fields
     try {
       await createUserService({ name, email, password }); // Pass only the required fields
-      toast.success("User registered");
+      setSuccess("User registered.");
       router.push("/"); // Redirect to login page after successful signup
     } catch (error: any) {
-      toast.error(error.message ?? "Failed to sign up");
+      setError(error.message ?? "Failed to sign up");
       console.error(error);
     }
   };
@@ -61,6 +65,8 @@ const Home = () => {
           }}
           onSubmit={async (values, actions) => {
             actions.setSubmitting(true);
+            setSuccess("");
+            setError("");
             await signup(values);
             actions.setSubmitting(false);
           }}
@@ -127,6 +133,9 @@ const Home = () => {
                     placeholder="Confirm your password"
                   />
                 </Group>
+
+                <FormError message={error} />
+                <FormSuccess message={success} />
 
                 <Button
                   className="flex gap-3 justify-center bg-primary text-white !py-2.5 rounded-md font-medium"

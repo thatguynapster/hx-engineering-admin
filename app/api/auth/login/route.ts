@@ -1,16 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import {
-  comparePassword,
-  dbConnect,
-  hashPassword,
-} from "../../../../libs/server";
-import { loginSchema } from "../../../../validators";
+import { comparePassword, dbConnect, hashPassword } from "@/libs/server";
+import { loginSchema } from "@/validators";
 import { UserCollection } from "@/models";
-import {
-  getJwtSecretKey,
-  setUserDataCookie,
-} from "../../../../functions/server";
+import { getJwtSecretKey, setUserDataCookie } from "@/functions/server";
 import { IUser } from "@/types";
 import { SignJWT } from "jose";
 
@@ -73,6 +66,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       {
         success: true,
         message: "Login successful",
+        response: user,
       },
       { status: 200 }
     );
@@ -87,16 +81,16 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       secure: true,
     });
 
-    setUserDataCookie({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      is_deleted: user.is_deleted,
-      is_dev: user.is_dev,
-      role: "",
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    });
+    // setUserDataCookie({
+    //   _id: user._id,
+    //   name: user.name,
+    //   email: user.email,
+    //   is_deleted: user.is_deleted,
+    //   is_dev: user.is_dev,
+    //   role: "",
+    //   createdAt: user.createdAt,
+    //   updatedAt: user.updatedAt,
+    // });
 
     return response;
   } catch (error) {

@@ -13,7 +13,15 @@ export type IUser = {
   updatedAt: string;
 };
 
-export interface Role {
+export interface IRole {
   _id?: string;
   name: string;
+  is_deleted: boolean;
+  is_dev: boolean;
+}
+
+export interface ISession {
+  _id?: string;
+  token: string;
+  expires: number;
 }

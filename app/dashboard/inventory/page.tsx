@@ -1,5 +1,8 @@
-import { classNames } from "@/libs";
+"use client";
+
 import React from "react";
+
+import { classNames } from "@/libs";
 
 const Products = () => {
   return (

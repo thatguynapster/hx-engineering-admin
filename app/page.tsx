@@ -2,29 +2,42 @@
 
 import { Form, Formik, FormikHelpers } from "formik";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import Image from "next/image";
 import { object } from "yup";
 
-import { Button, Group, Input } from "@/components";
+import { Button, FormError, Group, Input } from "@/components";
 import { loginUserService } from "@/services/auth";
 import { schema } from "@/libs";
+import { useState } from "react";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { useStore } from "@/hooks";
+
+interface FormData {
+  email: string;
+  password: string;
+}
 
 export default function Home() {
   const router = useRouter();
+  const { store, setStore } = useStore();
 
-  interface FormData {
-    email: string;
-    password: string;
-  }
+  const [error, setError] = useState<string>("");
 
   const login = async (values: FormData) => {
     const { email, password } = values; // Destructure the required fields
     try {
-      await loginUserService({ email, password }); // Pass only the required fields
-      router.push("/dashboard/inventory");
+      await loginUserService({ email, password })
+        .then((user) => {
+          setStore((state) => ({ ...state, user }));
+          setTimeout(() => router.push(DEFAULT_LOGIN_REDIRECT));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      // router.push("/dashboard/inventory");
     } catch (error: any) {
-      toast.error(error.message ?? "Failed to log in");
+      setError(error.message ?? "Failed to log in");
       console.error(error);
     }
   };
@@ -96,6 +109,8 @@ export default function Home() {
                 >
                   Forgot password
                 </p> */}
+
+                <FormError message={error} />
 
                 <Button
                   className="flex gap-3 justify-center bg-info text-white !py-2.5 rounded-md font-medium"

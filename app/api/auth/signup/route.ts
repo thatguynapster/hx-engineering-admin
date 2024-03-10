@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
-
-import { dbConnect, hashPassword } from "../../../../libs/server";
-import { registerSchema } from "../../../../validators";
-import { UserCollection } from "@/models";
 import mongoose from "mongoose";
-import { getJwtSecretKey, logEntry } from "../../../../functions/server";
 import { SignJWT } from "jose";
+
+import { getJwtSecretKey, logEntry } from "@/functions/server";
+import { dbConnect } from "@/libs/server";
+import { registerSchema } from "@/validators";
+import { UserCollection } from "@/models";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   try {

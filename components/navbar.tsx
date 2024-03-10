@@ -1,24 +1,12 @@
+import { Bars3Icon, PowerIcon } from "@heroicons/react/24/outline";
 import React from "react";
 
 import { classNames } from "@/libs";
-import { Button, Icons } from ".";
-import Dropdown from "./Dropdown";
-import Link from "next/link";
-import {
-  Bars3Icon,
-  BellIcon,
-  MagnifyingGlassIcon,
-  PowerIcon,
-  UserIcon,
-} from "@heroicons/react/24/outline";
+import { useStore } from "@/hooks";
 
-export const Navbar = ({
-  toggle,
-  setToggle,
-}: {
-  toggle: boolean;
-  setToggle: (t: boolean) => void;
-}) => {
+export const Navbar = ({ setToggle }: { setToggle: (t: boolean) => void }) => {
+  const { store } = useStore();
+
   return (
     <div
       className={classNames(
@@ -40,11 +28,15 @@ export const Navbar = ({
         <div className="flex items-center gap-x-4 lg:gap-x-6">
           <div
             className={classNames(
-              "w-10 h-10",
-              "bg-error/10 dark:bg-error",
+              "flex items-center justify-center",
               "text-error dark:text-white",
-              "flex items-center justify-center rounded-full"
+              "bg-error/10 dark:bg-error",
+              "cursor-pointer",
+              "rounded-full",
+              "w-10 h-10"
             )}
+            // @ts-ignore This is valid. Figure out why it's throwing an error
+            onClick={() => store.logout()}
           >
             <PowerIcon className="w-6" />
           </div>
