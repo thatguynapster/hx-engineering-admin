@@ -6,6 +6,7 @@ import { UserCollection } from "@/models";
 import { getJwtSecretKey, setUserDataCookie } from "@/functions/server";
 import { IUser } from "@/types";
 import { SignJWT } from "jose";
+import jwt from "jsonwebtoken";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
@@ -50,23 +51,37 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     }
     // END check password
 
-    const token = await new SignJWT({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      is_deleted: user.is_deleted,
-      is_dev: user.is_dev,
-    })
-      .setProtectedHeader({ alg: "HS256" })
-      .setIssuedAt()
-      .setExpirationTime(`6h`)
-      .sign(getJwtSecretKey());
+    // const token = await new SignJWT({
+    //   _id: user._id,
+    //   name: user.name,
+    //   email: user.email,
+    //   is_deleted: user.is_deleted,
+    //   is_dev: user.is_dev,
+    // })
+    //   .setProtectedHeader({ alg: "HS256" })
+    //   .setIssuedAt()
+    //   .setExpirationTime(`6h`)
+    //   .sign(getJwtSecretKey());
+    const token = jwt.sign(
+      {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        is_deleted: user.is_deleted,
+        is_dev: user.is_dev,
+      },
+      process.env.JWT_SECRET!,
+      {
+        algorithm: "HS256",
+        expiresIn: "6h",
+      }
+    );
 
     const response = NextResponse.json(
       {
         success: true,
         message: "Login successful",
-        response: user,
+        response: { user, token },
       },
       { status: 200 }
     );

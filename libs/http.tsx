@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'; // prettier-ignore
+import Cookies from "js-cookie";
 
 let store: any;
 let logout: any;
@@ -22,21 +23,8 @@ export const http = axios.create({
 });
 
 http.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  const [token] = (() => {
-    const _store = localStorage.getItem(
-      String(process.env["NEXT_PUBLIC_STORAGE_KEY"])
-    );
-
-    if (_store || store) {
-      const st = _store && JSON.parse(_store);
-
-      return [store?.token || st?.token];
-    }
-
-    return [];
-  })();
-
   if (config.headers) {
+    const token = Cookies.get("token");
     if (token) {
       config.headers["authorization"] = `Bearer ${token}`;
     }

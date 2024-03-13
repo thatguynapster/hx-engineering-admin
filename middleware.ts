@@ -1,9 +1,12 @@
 import { verifyJwtToken } from "@/functions/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
+
 import {
   DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
+  apiRoutes,
   authRoutes,
   publicRoutes,
 } from "@/routes";
@@ -12,27 +15,54 @@ import {
 export async function middleware(req: NextRequest) {
   const { nextUrl } = req;
 
-  console.log("REQ COOKIES: ", req.cookies);
   const token = req.cookies.get("token");
-  console.log("TOKEN: ", token);
 
   const isLoggedIn = !!token;
-  console.log(isLoggedIn);
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isAPIRoute = nextUrl.pathname.startsWith(apiRoutes);
 
   if (isApiAuthRoute) {
-    console.log("is api route");
-    return;
+    console.log("is api auth route");
+    return null;
   }
 
   if (isAuthRoute) {
-    console.log("is auth route");
+    console.log("is auth page route");
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
+    return null;
+  }
+
+  if (isAPIRoute && !isAuthRoute) {
+    console.log("is api route");
+
+    const authorization = req.headers.get("Authorization");
+
+    if (!authorization) {
+      return Response.json(
+        {
+          message: "Missing authentication",
+        },
+        { status: 500 }
+      );
+    }
+
+    // TODO check if token exists
+    const token = authorization.split("Bearer ")[1];
+
+    if (!token) {
+      return Response.json(
+        {
+          message: "Authentication failed",
+        },
+        { status: 500 }
+      );
+    }
+
     return null;
   }
 

@@ -18,9 +18,10 @@ export async function verifyJwtToken(
   token: string
 ): Promise<JWTPayload | null> {
   try {
-    const { payload } = await jwtVerify(token, getJwtSecretKey());
+    // const { payload } = await jwtVerify(token, getJwtSecretKey());
 
-    return payload;
+    // return payload;
+    return null;
   } catch (error) {
     return null;
   }

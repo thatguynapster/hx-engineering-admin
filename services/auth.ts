@@ -5,6 +5,11 @@ export const createUserService = (payload: IRegister) =>
   http.post<never, unknown>(`/auth/signup`, payload);
 
 export const loginUserService = (payload: ILogin) =>
-  http.post<never, IUser>(`/auth/login`, payload);
+  http.post<never, { user: IUser; token: string }>(`/auth/login`, payload);
 
-export const logoutUserService = () => http.get<never, IUser>(`/auth/logout`);
+export const logoutUserService = (token: string) =>
+  http.get<never, IUser>(`/auth/logout`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

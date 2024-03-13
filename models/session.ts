@@ -29,6 +29,6 @@ const sessionSchema = new Schema(
 
 sessionSchema.plugin(mongoosePaginate);
 
-export const Session =
+export const Sessions =
   models.Sessions ||
   model<ISession, ISessionDocument>("Sessions", sessionSchema, "Sessions");
