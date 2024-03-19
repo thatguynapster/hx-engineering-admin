@@ -1,14 +1,14 @@
 "use client";
 
-import { schema } from "@/libs";
-import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import toast from "react-hot-toast";
+import { Form, Formik } from "formik";
 import { object, ref } from "yup";
-import { Button, FormError, FormSuccess, Group, Input } from "@/components";
-import { createUserService } from "@/services/auth";
 import { useState } from "react";
+import Image from "next/image";
+
+import { Button, Field, FormError, FormSuccess } from "@/components";
+import { createUserService } from "@/services/auth";
+import { schema } from "@/libs";
 
 interface FormData {
   name: string;
@@ -74,71 +74,71 @@ const Home = () => {
           {({ values, isSubmitting }) => (
             <Form>
               <div className="flex flex-col gap-6 w-full">
-                <Group
+                <Field.Group
                   className="w-full !mb-0 text-dark"
                   name="name"
                   label="Name"
                   required
                 >
-                  <Input
+                  <Field.Input
                     as="input"
                     name="name"
                     type="name"
                     value={values.name}
                     placeholder="Enter your name"
                   />
-                </Group>
+                </Field.Group>
 
-                <Group
+                <Field.Group
                   className="w-full !mb-0 text-dark"
                   name="email"
                   label="Email"
                   required
                 >
-                  <Input
+                  <Field.Input
                     as="input"
                     name="email"
                     type="email"
                     value={values.email}
                     placeholder="Enter your email"
                   />
-                </Group>
+                </Field.Group>
 
-                <Group
+                <Field.Group
                   className="w-full !mb-0 text-dark"
                   name="password"
                   label="Password"
                   required
                 >
-                  <Input
+                  <Field.Input
                     as="input"
                     type="password"
                     name="password"
                     value={values.password}
                     placeholder="Create a password"
                   />
-                </Group>
+                </Field.Group>
 
-                <Group
+                <Field.Group
                   className="w-full !mb-0 text-dark"
                   name="confirmPassword"
                   label="Confirm Password"
                   required
                 >
-                  <Input
+                  <Field.Input
                     as="input"
                     type="password"
                     name="confirmPassword"
                     value={values.confirmPassword}
                     placeholder="Confirm your password"
                   />
-                </Group>
+                </Field.Group>
 
                 <FormError message={error} />
                 <FormSuccess message={success} />
 
                 <Button
-                  className="flex gap-3 justify-center bg-primary text-white !py-2.5 rounded-md font-medium"
+                  className="flex gap-3 justify-center bg-info text-white !py-2.5 rounded-md font-medium"
                   type="submit"
                   disabled={isSubmitting}
                   {...{ isSubmitting }}
@@ -152,7 +152,7 @@ const Home = () => {
 
         <p className="text-sm text-center">
           Already have an account?{" "}
-          <a href="/login" className="font-medium text-info">
+          <a href="/" className="font-medium text-info">
             Log in
           </a>
         </p>

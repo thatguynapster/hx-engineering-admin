@@ -11,6 +11,7 @@ export interface IProduct extends Document {
   is_dev: boolean;
   images: string[];
   name: string;
-  price: number;
+  sale_price: number;
+  cost_price: number;
   quantity: number;
 }

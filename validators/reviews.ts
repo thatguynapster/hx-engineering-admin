@@ -1,5 +1,5 @@
+import { IReview } from "@/types";
 import Joi from "joi";
-import { IReview } from "types";
 
 export const createReviewSchema = async (
   createCategoryBody: IReview

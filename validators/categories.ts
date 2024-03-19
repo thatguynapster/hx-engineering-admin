@@ -1,5 +1,5 @@
+import { ICategory } from "@/types";
 import Joi from "joi";
-import { ICategory } from "types";
 
 export const createCategorySchema = async (
   createCategoryBody: ICategory

@@ -1,12 +1,6 @@
-import { classNames } from "@/libs";
-import { SVGProps } from "react";
-import { Template } from "./Template";
+import { IconProps, Template } from "./template";
 
-export interface DashboardProps extends SVGProps<SVGSVGElement> {
-  size?: number;
-}
-
-export function Dashboard({ size = 20, className, ...props }: DashboardProps) {
+export function Dashboard({ size = 20, className, ...props }: IconProps) {
   return (
     <Template {...{ size, className, props }}>
       <path

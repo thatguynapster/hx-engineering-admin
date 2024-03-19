@@ -1,5 +1,5 @@
+import { IDiscount } from "@/types";
 import Joi from "joi";
-import { IDiscount } from "types";
 
 export const createDiscountSchema = async (
   createDiscountBody: IDiscount

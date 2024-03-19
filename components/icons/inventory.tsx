@@ -1,6 +1,6 @@
 import { classNames } from "@/libs";
 import { SVGProps } from "react";
-import { Template } from "./Template";
+import { Template } from "./template";
 
 export interface InventoryProps extends SVGProps<SVGSVGElement> {
   size?: number;

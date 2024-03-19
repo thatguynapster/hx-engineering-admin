@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 import { Navbar, Sidebar } from "@/components";
 import { useRouter } from "next/navigation";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { useStore } from "@/hooks";
 import { logoutUserService } from "@/services/auth";
+import { classNames } from "@/libs";
 
 export default function RootLayout({
   children,
@@ -19,11 +19,10 @@ export default function RootLayout({
   const [toggle, setToggle] = useState(false);
 
   async function logoutUser() {
-    await logoutUserService().then(() => router.push("./"));
+    await logoutUserService(store.token!).then(() => router.push("/"));
   }
 
   useEffect(() => {
-    console.log(store);
     if (!store?.user) {
       logoutUser();
     }
@@ -31,15 +30,19 @@ export default function RootLayout({
 
   return (
     <>
-      <div>
-        <Sidebar {...{ toggle, setToggle }} />
-        <div className="lg:pl-72">
-          <Navbar {...{ setToggle }} />
+      <Sidebar {...{ toggle, setToggle }} />
+      <div className="lg:pl-72">
+        <Navbar {...{ setToggle }} />
 
-          <main className="">
-            <div className="p-4 sm:px-6 lg:px-8">{children}</div>
-          </main>
-        </div>
+        <main
+          className={classNames(
+            "bg-neutral-30 dark:bg-neutral-dark",
+            "min-h-[calc(100vh-64px)]",
+            "p-4 sm:px-6 lg:px-8"
+          )}
+        >
+          {children}
+        </main>
       </div>
     </>
   );

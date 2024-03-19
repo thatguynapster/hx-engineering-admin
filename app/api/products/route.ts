@@ -33,8 +33,9 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       return Response.json(
         {
           message: "Authentication failed",
+          code: 401,
         },
-        { status: 500 }
+        { status: 401 }
       );
     }
     //END check if token is valid
@@ -125,12 +126,12 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     return NextResponse.json(
       {
-        error,
-        message: "Error",
+        success: false,
+        message: error.message ?? "An unexpected error occurred",
       },
       { status: 500 }
     );

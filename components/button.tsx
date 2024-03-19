@@ -28,8 +28,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           "text-sm font-medium whitespace-nowrap",
           "disabled:pointer-events-none",
           "outline-0 select-none",
-          "rounded-lg",
-          "py-4 px-6",
+          "rounded-md",
+          "py-2 px-4",
           props.className
         )}
       >

@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { object } from "yup";
 
-import { Button, FormError, Group, Input } from "@/components";
+import { Button, FormError, Field } from "@/components";
 import { loginUserService } from "@/services/auth";
 import { schema } from "@/libs";
 import { useState } from "react";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { useStore } from "@/hooks";
+import toast from "react-hot-toast";
 
 interface FormData {
   email: string;
@@ -27,18 +28,21 @@ export default function Home() {
     const { email, password } = values; // Destructure the required fields
     try {
       await loginUserService({ email, password })
-        .then((user) => {
-          setStore((state) => ({ ...state, user }));
+        .then((data) => {
+          setStore((state) => ({
+            ...state,
+            user: data.user,
+            token: data.token,
+          }));
           setTimeout(() => router.push(DEFAULT_LOGIN_REDIRECT));
         })
         .catch((error) => {
-          console.log(error);
+          toast.error("Login failed");
         });
 
       // router.push("/dashboard/inventory");
     } catch (error: any) {
       setError(error.message ?? "Failed to log in");
-      console.error(error);
     }
   };
 
@@ -76,32 +80,32 @@ export default function Home() {
           {({ values, isSubmitting }) => (
             <Form>
               <div className="flex flex-col gap-6 w-full">
-                <Group
+                <Field.Group
                   className="w-full !mb-0 text-dark"
                   name="email"
                   label="Email"
                 >
-                  <Input
+                  <Field.Input
                     as="input"
                     name="email"
                     value={values.email}
                     placeholder="Enter your email"
                   />
-                </Group>
+                </Field.Group>
 
-                <Group
+                <Field.Group
                   className="w-full !mb-0 text-dark"
                   name="password"
                   label="Password"
                 >
-                  <Input
+                  <Field.Input
                     as="input"
                     type="password"
                     name="password"
                     value={values.password}
                     placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                   />
-                </Group>
+                </Field.Group>
 
                 {/* <p
                   className="text-info text-right font-medium text-sm"

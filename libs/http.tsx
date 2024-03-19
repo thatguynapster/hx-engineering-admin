@@ -42,7 +42,7 @@ http.interceptors.response.use(
   (error: AxiosError<string>) => {
     if (error.response?.status !== 500) {
       if (error.response?.status === 401) {
-        // logout?.();
+        logout?.();
       }
 
       return Promise.reject(error?.response?.data ?? error?.message);

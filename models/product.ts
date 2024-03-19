@@ -26,7 +26,8 @@ const productSchema = new Schema<IProduct>(
     is_deleted: { type: Boolean, default: false },
     is_dev: { type: Boolean, default: false, required: true },
     name: { type: String, required: true },
-    price: { type: Number, required: true },
+    cost_price: { type: Number, required: true },
+    sale_price: { type: Number, required: true },
     quantity: { type: Number, required: true },
   },
   { timestamps: true }

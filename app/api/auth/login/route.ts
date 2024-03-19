@@ -109,6 +109,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     return response;
   } catch (error) {
-    return new NextResponse("Error signing up: " + error, { status: 500 });
+    return new NextResponse("Error logging in: " + error, { status: 500 });
   }
 };

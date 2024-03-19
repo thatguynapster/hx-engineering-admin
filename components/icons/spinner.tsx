@@ -1,6 +1,5 @@
 import { classNames } from "@/libs";
 import { SVGProps } from "react";
-import { Template } from "./Template";
 
 export interface SpinnerProps extends SVGProps<SVGSVGElement> {
   size?: number;

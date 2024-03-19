@@ -1,3 +1,14 @@
+export const routes = {
+  overview: { index: "/dashboard/overview" },
+  inventory: {
+    index: "/dashboard/inventory",
+    add: "/dashboard/inventory/add",
+    edit: "/dashboard/inventory/edit",
+  },
+  orders: { index: "/dashboard/orders" },
+  team: { index: "/dashboard/team" },
+};
+
 /**
  * An array of routes accessible to the public. These routes do not require auth
  * @type {string[]}
@@ -26,4 +37,4 @@ export const apiRoutes: string = "/api";
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT: string = "/dashboard/inventory";
+export const DEFAULT_LOGIN_REDIRECT: string = routes.inventory.index;
