@@ -11,8 +11,44 @@ import {
   publicRoutes,
 } from "@/routes";
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://hx-engineering-admin-jx9en33nd-napster94.vercel.app",
+];
+
+const corsOptions = {
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 // This function can be marked `async` if using `await` inside
-export async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest, res: NextResponse) {
+  // Check the origin from the request
+  const origin = req.headers.get("origin") ?? "";
+  const isAllowedOrigin = allowedOrigins.includes(origin);
+
+  // Handle preflighted requests
+  const isPreflight = req.method === "OPTIONS";
+
+  if (isPreflight) {
+    const preflightHeaders = {
+      ...(isAllowedOrigin && { "Access-Control-Allow-Origin": origin }),
+      ...corsOptions,
+    };
+    return NextResponse.json({}, { headers: preflightHeaders });
+  }
+
+  // Handle simple requests
+  const response = NextResponse.next();
+
+  if (isAllowedOrigin) {
+    response.headers.set("Access-Control-Allow-Origin", origin);
+  }
+
+  Object.entries(corsOptions).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
+
   const { nextUrl } = req;
 
   const token = req.cookies.get("token");
@@ -63,7 +99,7 @@ export async function middleware(req: NextRequest) {
       );
     }
 
-    return null;
+    return response;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
