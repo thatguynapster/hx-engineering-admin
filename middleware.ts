@@ -25,6 +25,7 @@ const corsOptions = {
 export async function middleware(req: NextRequest, res: NextResponse) {
   // Check the origin from the request
   const origin = req.headers.get("origin") ?? "";
+  console.log(origin);
   const isAllowedOrigin = allowedOrigins.includes(origin);
 
   // Handle preflighted requests
