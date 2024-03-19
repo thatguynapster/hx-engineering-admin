@@ -43,7 +43,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
     corsOptions.allowedOrigins.includes("*") ||
     corsOptions.allowedOrigins.includes(origin)
   ) {
-    response.headers.set("Access-Control-Allow-Origin", origin);
+    response.headers.set("Access-Control-Allow-Origin", "*");
   }
 
   // Set default CORS headers
