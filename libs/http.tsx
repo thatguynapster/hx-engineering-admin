@@ -18,13 +18,27 @@ export const http = axios.create({
   baseURL: process.env["NEXT_PUBLIC_BASE_API"],
   headers: {
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
     Accept: "application/json",
   },
 });
 
 http.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const [token] = (() => {
+    const _store = localStorage.getItem(
+      process.env["NEXT_PUBLIC_STORAGE_KEY"]!
+    );
+
+    if (_store || store) {
+      const st = _store && JSON.parse(_store);
+
+      return [store?.token || st?.token];
+    }
+
+    return [];
+  })();
+
   if (config.headers) {
-    const token = Cookies.get("token");
     if (token) {
       config.headers["authorization"] = `Bearer ${token}`;
     }
