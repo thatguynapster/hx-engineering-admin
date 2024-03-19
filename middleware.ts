@@ -31,46 +31,6 @@ const corsOptions: {
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest, res: NextResponse) {
-  /**
-   * handle cors
-   */
-  // Response
-  const response = NextResponse.next();
-
-  // Allowed origins check
-  const origin = req.headers.get("origin") ?? "";
-  if (
-    corsOptions.allowedOrigins.includes("*") ||
-    corsOptions.allowedOrigins.includes(origin)
-  ) {
-    response.headers.set("Access-Control-Allow-Origin", "*");
-  }
-
-  // Set default CORS headers
-  response.headers.set(
-    "Access-Control-Allow-Credentials",
-    corsOptions.credentials.toString()
-  );
-  response.headers.set(
-    "Access-Control-Allow-Methods",
-    corsOptions.allowedMethods.join(",")
-  );
-  response.headers.set(
-    "Access-Control-Allow-Headers",
-    corsOptions.allowedHeaders.join(",")
-  );
-  response.headers.set(
-    "Access-Control-Expose-Headers",
-    corsOptions.exposedHeaders.join(",")
-  );
-  response.headers.set(
-    "Access-Control-Max-Age",
-    corsOptions.maxAge?.toString() ?? ""
-  );
-  /**
-   * END handle cors
-   */
-
   const { nextUrl } = req;
 
   const token = req.cookies.get("token");
@@ -121,7 +81,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
       );
     }
 
-    return response;
+    return null;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
