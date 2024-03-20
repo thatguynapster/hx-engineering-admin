@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { NextApiRequest, NextApiResponse } from "next";
-import NextCors from "nextjs-cors";
 
 import { comparePassword, dbConnect, hashPassword } from "@/libs/server";
 import { loginSchema } from "@/validators";
