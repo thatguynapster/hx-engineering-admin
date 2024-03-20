@@ -7,11 +7,6 @@ import { Badge, Field, Table } from "@/components";
 import { classNames } from "@/libs";
 import { IProduct } from "@/types";
 
-// import { useDeliveryTypes } from "../../../hooks";
-// import TableActions from './table-actions';
-// import Details from './details';
-// import Accept from './accept';
-
 const TableBody = ({
   data,
   onMutate,
@@ -30,11 +25,11 @@ const TableBody = ({
             "w-max"
           )}
         >
-          <div className="bg-white bg-center bg-no-repeat bg-cover">
+          <div className="w-[60px] h-[70px] bg-white bg-center bg-no-repeat bg-cover">
             <Image
               width={60}
               height={70}
-              src={data.images[0] ?? "/img/logo.png"}
+              src={(data.images[0] as string) ?? "/img/logo.png"}
               alt={`${name} image`}
               className={`w-full h-full rounded-md`}
               onError={(ev) => {

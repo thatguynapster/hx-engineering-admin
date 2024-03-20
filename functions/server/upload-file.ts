@@ -1,4 +1,3 @@
-import multer from "multer";
 import { ID, InputFile, storage } from "@/libs/server";
 
 export const upload_file = async (file: any, bucket: string) => {

@@ -7,7 +7,7 @@ import { useState } from "react";
 import Image from "next/image";
 
 import { Button, Field, FormError, FormSuccess } from "@/components";
-import { createUserService } from "@/services/auth";
+import { createUserService } from "@/services";
 import { schema } from "@/libs";
 
 interface FormData {

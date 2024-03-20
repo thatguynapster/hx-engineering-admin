@@ -3,9 +3,8 @@ import mongoose from "mongoose";
 
 import { CategoryCollection, ProductCollection } from "@/models";
 import { dbConnect, validateToken } from "@/libs/server";
-import { createProductSchema } from "@/validators";
+import { createCategorySchema } from "@/validators";
 import { logEntry } from "@/functions/server";
-import { ICategory, IProduct } from "@/types";
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   await dbConnect();
@@ -15,10 +14,6 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       (req.nextUrl.searchParams.get("limit") as unknown as number) ?? 10;
     const page =
       (req.nextUrl.searchParams.get("page") as unknown as number) ?? 1;
-    const category_details =
-      (req.nextUrl.searchParams.get(
-        "category_details"
-      ) as unknown as boolean) ?? false;
 
     //NOTE do this in every route
     // at this point the authorization header exists
@@ -39,41 +34,26 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     //END check if token is valid
 
     // @ts-ignore this is valid
-    const products = await ProductCollection.paginate(
-      { is_deleted: false, is_dev: process.env.ENVIRONMENT === "development" },
+    const categories = await CategoryCollection.paginate(
+      {
+        is_deleted: { $ne: true },
+        is_dev: process.env.NODE_ENV === "development",
+      },
       { lean: true, limit, page, sort: { _id: -1 } }
     );
 
-    // get category details for each product
-    if (category_details) {
-      products.docs = await Promise.all(
-        products.docs.map(async (product: IProduct) => {
-          try {
-            const categoryDetails = (await CategoryCollection.findOne({
-              _id: product.category,
-            }).lean()) as ICategory;
-            product.category_details = categoryDetails;
-            return product;
-          } catch (error) {
-            console.error("Error fetching category details:", error);
-            return product;
-          }
-        })
-      );
-    }
-
-    if (!products) {
+    if (categories.docs.length === 0) {
       return NextResponse.json(
-        { success: false, message: "No products found" },
-        { status: 204 }
+        { success: false, message: "No categories found" },
+        { status: 200 }
       );
     }
 
     return NextResponse.json(
       {
         success: true,
-        message: "Products found",
-        response: products,
+        message: "Categories",
+        response: categories,
       },
       { status: 200 }
     );
@@ -95,26 +75,30 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
     const reqBody = await req.json();
 
-    const productBody = await createProductSchema(reqBody);
+    const categoryBody = await createCategorySchema(reqBody);
 
-    // const existingProduct = await ProductCollection.findOne({
-    //   name: productBody.name,
-    //   is_deleted: { $ne: true },
-    // });
+    const existingCategory = await CategoryCollection.findOne({
+      name: categoryBody.name,
+      is_deleted: { $ne: true },
+    });
 
-    // if (existingProduct) {
-    //   const error = new Error("Product with the same name already exists");
-    //   error.name = "AlreadyExists";
-    //   throw error;
-    // }
+    if (existingCategory) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Product with the same name already exists",
+        },
+        { status: 204 }
+      );
+    }
 
-    const product = await new ProductCollection({
-      ...productBody,
+    const product = await new CategoryCollection({
+      ...categoryBody,
       // _id: new mongoose.Types.ObjectId(),
       is_dev: process.env.ENVIRONMENT === "development",
     }).save();
 
-    await logEntry("product", productBody, "CREATE");
+    await logEntry("product", categoryBody, "CREATE");
 
     return NextResponse.json(
       {
