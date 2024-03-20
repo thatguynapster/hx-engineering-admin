@@ -1,7 +1,5 @@
-import { verifyJwtToken } from "@/functions/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
 
 import {
   DEFAULT_LOGIN_REDIRECT,
@@ -11,66 +9,8 @@ import {
   publicRoutes,
 } from "@/routes";
 
-// Config
-// ========================================================
-const corsOptions: {
-  allowedMethods: string[];
-  allowedOrigins: string[];
-  allowedHeaders: string[];
-  exposedHeaders: string[];
-  maxAge?: number;
-  credentials: boolean;
-} = {
-  allowedMethods: (process.env?.ALLOWED_METHODS || "").split(","),
-  allowedOrigins: (process.env?.ALLOWED_ORIGIN || "").split(","),
-  allowedHeaders: (process.env?.ALLOWED_HEADERS || "").split(","),
-  exposedHeaders: (process.env?.EXPOSED_HEADERS || "").split(","),
-  maxAge: (process.env?.MAX_AGE && parseInt(process.env?.MAX_AGE)) || undefined, // 60 * 60 * 24 * 30, // 30 days
-  credentials: process.env?.CREDENTIALS == "true",
-};
-
 // This function can be marked `async` if using `await` inside
 export async function middleware(req: NextRequest, res: NextResponse) {
-  /**
-   * handle cors
-   */
-  // // Response
-  // const response = NextResponse.next();
-
-  // Allowed origins check
-  const origin = req.headers.get("origin") ?? "";
-  if (
-    corsOptions.allowedOrigins.includes("*") ||
-    corsOptions.allowedOrigins.includes(origin)
-  ) {
-    res.headers.append("Access-Control-Allow-Origin", "*");
-  }
-
-  // Set default CORS headers
-  res.headers.append(
-    "Access-Control-Allow-Credentials",
-    corsOptions.credentials.toString()
-  );
-  res.headers.append(
-    "Access-Control-Allow-Methods",
-    corsOptions.allowedMethods.join(",")
-  );
-  res.headers.append(
-    "Access-Control-Allow-Headers",
-    corsOptions.allowedHeaders.join(",")
-  );
-  res.headers.append(
-    "Access-Control-Expose-Headers",
-    corsOptions.exposedHeaders.join(",")
-  );
-  res.headers.append(
-    "Access-Control-Max-Age",
-    corsOptions.maxAge?.toString() ?? ""
-  );
-  /**
-   * END handle cors
-   */
-
   const { nextUrl } = req;
 
   const token = req.cookies.get("token");

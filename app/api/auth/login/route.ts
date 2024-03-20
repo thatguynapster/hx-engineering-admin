@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from "next";
+import NextCors from "nextjs-cors";
 
 import { comparePassword, dbConnect, hashPassword } from "@/libs/server";
 import { loginSchema } from "@/validators";
 import { UserCollection } from "@/models";
-import { getJwtSecretKey, setUserDataCookie } from "@/functions/server";
 import { IUser } from "@/types";
-import { SignJWT } from "jose";
 import jwt from "jsonwebtoken";
+import { corsOptions } from "@/configs";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
@@ -81,7 +82,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       {
         success: true,
         message: "Login successful",
-        response: { user, token },
+        // response: { user, token },
       },
       { status: 200 }
     );
@@ -106,6 +107,55 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     //   createdAt: user.createdAt,
     //   updatedAt: user.updatedAt,
     // });
+
+    return response;
+  } catch (error) {
+    return new NextResponse("Error logging in: " + error, { status: 500 });
+  }
+};
+
+export const OPTIONS = async (req: NextRequest) => {
+  try {
+    const response = NextResponse.json({}, { status: 200 });
+    /**
+     * handle cors
+     */
+    // // Response
+    // const response = NextResponse.next();
+
+    // Allowed origins check
+    const origin = req.headers.get("origin") ?? "";
+    if (
+      corsOptions.allowedOrigins.includes("*") ||
+      corsOptions.allowedOrigins.includes(origin)
+    ) {
+      response.headers.append("Access-Control-Allow-Origin", origin);
+    }
+
+    // Set default CORS headers
+    response.headers.append(
+      "Access-Control-Allow-Credentials",
+      corsOptions.credentials.toString()
+    );
+    response.headers.append(
+      "Access-Control-Allow-Methods",
+      corsOptions.allowedMethods.join(",")
+    );
+    response.headers.append(
+      "Access-Control-Allow-Headers",
+      corsOptions.allowedHeaders.join(",")
+    );
+    response.headers.append(
+      "Access-Control-Expose-Headers",
+      corsOptions.exposedHeaders.join(",")
+    );
+    response.headers.append(
+      "Access-Control-Max-Age",
+      corsOptions.maxAge?.toString() ?? ""
+    );
+    /**
+     * END handle cors
+     */
 
     return response;
   } catch (error) {
