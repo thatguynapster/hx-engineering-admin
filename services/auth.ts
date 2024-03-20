@@ -11,5 +11,6 @@ export const logoutUserService = (token: string) =>
   http.get<never, IUser>(`/auth/logout`, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
     },
   });
