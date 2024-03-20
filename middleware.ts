@@ -34,8 +34,8 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   /**
    * handle cors
    */
-  // Response
-  const response = NextResponse.next();
+  // // Response
+  // const response = NextResponse.next();
 
   // Allowed origins check
   const origin = req.headers.get("origin") ?? "";
@@ -43,27 +43,27 @@ export async function middleware(req: NextRequest, res: NextResponse) {
     corsOptions.allowedOrigins.includes("*") ||
     corsOptions.allowedOrigins.includes(origin)
   ) {
-    response.headers.append("Access-Control-Allow-Origin", "*");
+    res.headers.append("Access-Control-Allow-Origin", "*");
   }
 
   // Set default CORS headers
-  response.headers.append(
+  res.headers.append(
     "Access-Control-Allow-Credentials",
     corsOptions.credentials.toString()
   );
-  response.headers.append(
+  res.headers.append(
     "Access-Control-Allow-Methods",
     corsOptions.allowedMethods.join(",")
   );
-  response.headers.append(
+  res.headers.append(
     "Access-Control-Allow-Headers",
     corsOptions.allowedHeaders.join(",")
   );
-  response.headers.append(
+  res.headers.append(
     "Access-Control-Expose-Headers",
     corsOptions.exposedHeaders.join(",")
   );
-  response.headers.append(
+  res.headers.append(
     "Access-Control-Max-Age",
     corsOptions.maxAge?.toString() ?? ""
   );
@@ -81,6 +81,10 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isAPIRoute = nextUrl.pathname.startsWith(apiRoutes);
+
+  if (req.method === "OPTIONS") {
+    return Response.json({}, { status: 200 });
+  }
 
   if (isApiAuthRoute) {
     console.log("is api auth route");
@@ -121,7 +125,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
       );
     }
 
-    return response;
+    return res;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
