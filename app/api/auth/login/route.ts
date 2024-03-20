@@ -80,7 +80,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       {
         success: true,
         message: "Login successful",
-        // response: { user, token },
+        response: { user, token },
       },
       { status: 200 }
     );
