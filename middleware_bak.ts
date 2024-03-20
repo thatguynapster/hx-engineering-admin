@@ -1,110 +1,98 @@
 import { verifyJwtToken } from "@/functions/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
 
-// Add whatever paths you want to PROTECT here
-const authRoutes = ["/api/*", "/dashboard/*"];
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
+  apiRoutes,
+  authRoutes,
+  publicRoutes,
+} from "@/routes";
 
-// Function to match the * wildcard character
-function matchesWildcard(path: string, pattern: string): boolean {
-  if (pattern.endsWith("/*")) {
-    const basePattern = pattern.slice(0, -2);
-    return path.startsWith(basePattern);
-  }
-  return path === pattern;
-}
+// Config
+// ========================================================
+const corsOptions: {
+  allowedMethods: string[];
+  allowedOrigins: string[];
+  allowedHeaders: string[];
+  exposedHeaders: string[];
+  maxAge?: number;
+  credentials: boolean;
+} = {
+  allowedMethods: (process.env?.ALLOWED_METHODS || "").split(","),
+  allowedOrigins: (process.env?.ALLOWED_ORIGIN || "").split(","),
+  allowedHeaders: (process.env?.ALLOWED_HEADERS || "").split(","),
+  exposedHeaders: (process.env?.EXPOSED_HEADERS || "").split(","),
+  maxAge: (process.env?.MAX_AGE && parseInt(process.env?.MAX_AGE)) || undefined, // 60 * 60 * 24 * 30, // 30 days
+  credentials: process.env?.CREDENTIALS == "true",
+};
 
 // This function can be marked `async` if using `await` inside
-export async function middleware(req: NextRequest) {
-  const request = await req.json();
+export async function middleware(req: NextRequest, res: NextResponse) {
+  const { nextUrl } = req;
 
-  // Shortcut for our login path redirect
-  // Note: you must use absolute URLs for middleware redirects
-  const LOGIN = `${process.env.NEXT_PUBLIC_BASE_URL}/login?redirect=${
-    request.nextUrl.pathname + request.nextUrl.search
-  }`;
+  const token = req.cookies.get("token");
 
-  if (
-    authRoutes.some((pattern) =>
-      matchesWildcard(request.nextUrl.pathname, pattern)
-    )
-  ) {
-    const token = request.cookies.get("token");
+  const isLoggedIn = !!token;
 
-    // For API routes, we want to return unauthorized instead of
-    // redirecting to login
-    if (request.nextUrl.pathname.startsWith("/api")) {
-      if (!token) {
-        const response = {
-          success: false,
-          message: "Unauthorized",
-        };
-        return NextResponse.json(response, { status: 401 });
-      }
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isAPIRoute = nextUrl.pathname.startsWith(apiRoutes);
+
+  if (isApiAuthRoute) {
+    console.log("is api auth route");
+    return null;
+  }
+
+  if (isAuthRoute) {
+    console.log("is auth page route");
+    if (isLoggedIn) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return null;
+  }
+
+  if (isAPIRoute && !isAuthRoute) {
+    console.log("is api route");
+
+    const authorization = req.headers.get("Authorization");
+
+    if (!authorization) {
+      return Response.json(
+        {
+          message: "Missing authentication",
+        },
+        { status: 500 }
+      );
     }
 
-    // If no token exists, redirect to login
+    // TODO check if token exists
+    const token = authorization.split("Bearer ")[1];
+
     if (!token) {
-      return NextResponse.redirect(LOGIN);
+      return Response.json(
+        {
+          message: "Authentication failed",
+        },
+        { status: 500 }
+      );
     }
 
-    try {
-      // Decode and verify JWT cookie
-      const payload = await verifyJwtToken(token.value);
-
-      if (!payload) {
-        // Delete token
-        request.cookies.delete("token");
-        return NextResponse.redirect(LOGIN);
-      }
-
-      // If you have an admin role and path, secure it here
-      if (request.nextUrl.pathname.startsWith("/admin")) {
-        if (payload.role !== "admin") {
-          return NextResponse.redirect(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/access-denied`
-          );
-        }
-      }
-    } catch (error) {
-      // Delete token if authentication fails
-      request.cookies.delete("token");
-      return NextResponse.redirect(LOGIN);
-    }
+    return null;
   }
 
-  let redirectToApp = false;
-  // Redirect login to app if already logged in
-  if (request.nextUrl.pathname === "/login") {
-    const token = request.cookies.get("token");
-
-    if (token) {
-      try {
-        const payload = await verifyJwtToken(token.value);
-
-        if (payload) {
-          redirectToApp = true;
-        } else {
-          // Delete token
-          request.cookies.delete("token");
-        }
-      } catch (error) {
-        // Delete token
-        request.cookies.delete("token");
-      }
-    }
+  if (!isLoggedIn && !isPublicRoute) {
+    return Response.redirect(new URL("/", nextUrl));
   }
 
-  if (redirectToApp) {
-    // Redirect to app dashboard
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/app`);
-  } else {
-    // Return the original response unaltered
-    return NextResponse.next();
-  }
+  return null;
 }
 
-// // See "Matching Paths" below to learn more
-// export const config = {
-//   matcher: ["/api/*", "/dashboard/*"],
-// };
+// Optionally, don't invoke Middleware on some paths
+// Read more: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+export const config = {
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};
