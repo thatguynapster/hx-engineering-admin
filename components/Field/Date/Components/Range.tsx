@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode, useEffect, useState } from "react";
 import Flatpickr from "react-flatpickr";
 import dayjs from "dayjs";

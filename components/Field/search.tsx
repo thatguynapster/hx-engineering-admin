@@ -1,3 +1,5 @@
+"use client";
+
 import { ChangeEvent, useCallback, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import debounce from "lodash/debounce";

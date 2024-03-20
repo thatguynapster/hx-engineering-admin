@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
