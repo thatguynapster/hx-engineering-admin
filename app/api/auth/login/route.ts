@@ -114,12 +114,11 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
 export const OPTIONS = async (req: NextRequest) => {
   try {
-    const response = NextResponse.json({}, { status: 200 });
     /**
      * handle cors
      */
-    // // Response
-    // const response = NextResponse.next();
+    // Response
+    const response = NextResponse.next();
 
     // Allowed origins check
     const origin = req.headers.get("origin") ?? "";
