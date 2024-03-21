@@ -8,9 +8,50 @@ import {
   authRoutes,
   publicRoutes,
 } from "@/routes";
+import { corsOptions } from "./configs";
 
 // This function can be marked `async` if using `await` inside
-export async function middleware(req: NextRequest, res: NextResponse) {
+export async function middleware(req: NextRequest) {
+  /**
+   * cors
+   */
+  // Response
+  const response = NextResponse.next();
+
+  // Allowed origins check
+  const origin = req.headers.get("origin") ?? "";
+  if (
+    corsOptions.allowedOrigins.includes("*") ||
+    corsOptions.allowedOrigins.includes(origin)
+  ) {
+    response.headers.set("Access-Control-Allow-Origin", origin);
+  }
+
+  // Set default CORS headers
+  response.headers.set(
+    "Access-Control-Allow-Credentials",
+    corsOptions.credentials.toString()
+  );
+  response.headers.set(
+    "Access-Control-Allow-Methods",
+    corsOptions.allowedMethods.join(",")
+  );
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    corsOptions.allowedHeaders.join(",")
+  );
+  response.headers.set(
+    "Access-Control-Expose-Headers",
+    corsOptions.exposedHeaders.join(",")
+  );
+  response.headers.set(
+    "Access-Control-Max-Age",
+    corsOptions.maxAge?.toString() ?? ""
+  );
+  /**
+   * END cors
+   */
+
   const { nextUrl } = req;
 
   const token = req.cookies.get("token");
@@ -22,13 +63,9 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isAPIRoute = nextUrl.pathname.startsWith(apiRoutes);
 
-  if (req.method === "OPTIONS") {
-    return Response.json({}, { status: 200 });
-  }
-
   if (isApiAuthRoute) {
     console.log("is api auth route");
-    return null;
+    return response;
   }
 
   if (isAuthRoute) {
@@ -65,7 +102,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
       );
     }
 
-    return res;
+    return response;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
