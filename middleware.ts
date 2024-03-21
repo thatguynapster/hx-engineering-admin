@@ -24,27 +24,27 @@ export async function middleware(req: NextRequest) {
     corsOptions.allowedOrigins.includes("*") ||
     corsOptions.allowedOrigins.includes(origin)
   ) {
-    response.headers.set("Access-Control-Allow-Origin", origin);
+    response.headers.append("Access-Control-Allow-Origin", origin);
   }
 
   // Set default CORS headers
-  response.headers.set(
+  response.headers.append(
     "Access-Control-Allow-Credentials",
     corsOptions.credentials.toString()
   );
-  response.headers.set(
+  response.headers.append(
     "Access-Control-Allow-Methods",
     corsOptions.allowedMethods.join(",")
   );
-  response.headers.set(
+  response.headers.append(
     "Access-Control-Allow-Headers",
     corsOptions.allowedHeaders.join(",")
   );
-  response.headers.set(
+  response.headers.append(
     "Access-Control-Expose-Headers",
     corsOptions.exposedHeaders.join(",")
   );
-  response.headers.set(
+  response.headers.append(
     "Access-Control-Max-Age",
     corsOptions.maxAge?.toString() ?? ""
   );
