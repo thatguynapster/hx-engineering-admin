@@ -15,7 +15,7 @@ const TableBody = ({
   onMutate: () => void;
 }) => {
   return (
-    <tr className="dark:text-neutral-10 cursor-pointer hover:bg-neutral-50 my-2">
+    <tr className="dark:text-neutral-10 cursor-pointer hover:bg-neutral-10 dark:hover:bg-neutral-50 my-2">
       <Table.TD>
         <div
           className={classNames(
@@ -25,7 +25,7 @@ const TableBody = ({
             "w-max"
           )}
         >
-          <div className="w-[60px] h-[70px] bg-white bg-center bg-no-repeat bg-cover">
+          <div className="w-[60px] h-[70px] bg-white bg-center bg-no-repeat bg-cover rounded-md">
             <Image
               width={60}
               height={70}

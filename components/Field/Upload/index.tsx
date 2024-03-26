@@ -107,6 +107,7 @@ export function Upload({
                       className="w-5 h-5 cursor-pointer absolute top-0 right-0 bg-neutral-50/70 hidden group-hover:block"
                       onClick={() => {
                         removeFile(index);
+                        imageRef.current.value = "";
                       }}
                     >
                       <TrashIcon className="w-5 h-5 text-error" />

@@ -11,19 +11,40 @@ import { TablePagination } from "@/components/Table";
 import { Button, Table } from "@/components";
 import { FiltersProps } from "@/types/ui";
 import { classNames, http } from "@/libs";
-import { IApiResponse } from "@/types";
+import { IApiResponse, IProduct } from "@/types";
 import { useStore } from "@/hooks";
 import { useRouter } from "next/navigation";
 import AddProduct from "@/components/pages/inventory/add-product";
+import { FormikHelpers } from "formik";
+import { createProductService } from "@/services";
 
 const Products = () => {
   const router = useRouter();
   const { store } = useStore();
-  const [filters, setFilters] = useState<Partial<FiltersProps>>({});
+  const [filters, setFilters] = useState<Partial<FiltersProps>>({ page: 1 });
 
   const { data, isLoading, error, mutate } = useSWR<IApiResponse>(
     store && `/products?${queryString.stringify({ ...filters })}`
   );
+
+  const uploadProduct = async (
+    values: Partial<IProduct>,
+    actions: FormikHelpers<Partial<IProduct>>,
+    hide: () => void
+  ) => {
+    console.log(values);
+
+    await createProductService(values, store.token!)
+      .then((resp) => {
+        console.log(resp);
+        mutate();
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        actions.setSubmitting(false);
+        hide();
+      });
+  };
 
   return (
     <div
@@ -50,11 +71,7 @@ const Products = () => {
             "gap-3"
           )}
         >
-          <AddProduct
-            onAdd={function (): void {
-              toast.error("Function not implemented.");
-            }}
-          >
+          <AddProduct onAdd={uploadProduct}>
             {({ proceed }) => (
               <Button className="bg-info text-white" onClick={proceed}>
                 <PlusIcon className="w-5 h-5/>" />

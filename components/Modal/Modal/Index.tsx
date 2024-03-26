@@ -111,6 +111,7 @@ export function Modal({
           className={classNames(
             "w-full rounded-lg",
             "shadow-3xl bg-white dark:bg-neutral-dark pointer-events-auto relative",
+            header && "flex flex-col gap-3",
             className || "p-6"
           )}
         >

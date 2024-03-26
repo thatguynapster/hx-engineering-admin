@@ -1,8 +1,9 @@
-import { Field, Modal } from "@/components";
+import { Button, Field, Modal } from "@/components";
 import { useStore } from "@/hooks";
-import { UploadProductImageService } from "@/services";
+import { schema } from "@/libs";
+import { uploadProductImageService } from "@/services";
 import { IApiResponse, ICategory, IProduct } from "@/types";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import React, { ReactNode, useMemo, useState } from "react";
 import useSWR from "swr";
 import { object } from "yup";
@@ -10,10 +11,14 @@ import { object } from "yup";
 interface AddProductProps {
   children: (props: { proceed: () => void }) => ReactNode;
   productID?: IProduct;
-  onAdd: () => void;
+  onAdd: (
+    values: Partial<IProduct>,
+    actions: FormikHelpers<Partial<IProduct>>,
+    hide: () => void
+  ) => void;
 }
 
-const AddProduct = ({ children, productID }: AddProductProps) => {
+const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
   const { store } = useStore();
   const [show, setShow] = useState<boolean>(false);
 
@@ -42,11 +47,25 @@ const AddProduct = ({ children, productID }: AddProductProps) => {
         <Formik
           validateOnMount
           enableReinitialize
-          validationSchema={object({})}
+          validationSchema={object({
+            name: schema.requireString("Product Name"),
+            images: schema.requireArray("Product Image"),
+            cost_price: schema.requireNumber("Product Cost Price").min(1),
+            sale_price: schema.requireNumber("Product Sale Price").min(1),
+            quantity: schema.requireNumber("Product Quantity").min(1),
+            details: schema.requireString("Product Details"),
+          })}
           initialValues={{
             images: [] as string[],
+            cost_price: 0,
+            sale_price: 0,
+            quantity: 0,
+            details: "",
+            name: "",
           }}
-          onSubmit={(params: Partial<IProduct>, actions) => {}}
+          onSubmit={(values: Partial<IProduct>, actions) => {
+            onAdd(values, actions, () => setShow(false));
+          }}
         >
           {({
             values,
@@ -59,7 +78,7 @@ const AddProduct = ({ children, productID }: AddProductProps) => {
             <div className="flex flex-col gap-4">
               <Field.Upload
                 count={5}
-                values={(values.images as any) ?? []}
+                values={values.images ?? []}
                 name="images"
                 type={"image"}
                 onValueChanged={async (file: File) => {
@@ -70,7 +89,7 @@ const AddProduct = ({ children, productID }: AddProductProps) => {
 
                   const fd = new FormData();
                   fd.append("file", file);
-                  await UploadProductImageService(fd, store.token!).then(
+                  await uploadProductImageService(fd, store.token!).then(
                     (resp) => {
                       console.log(resp, values.images, values.images!.length);
                       if (!values.images!.length) {
@@ -89,15 +108,7 @@ const AddProduct = ({ children, productID }: AddProductProps) => {
                 {...{ setFieldTouched }}
               />
 
-              <div className="grid grid-cols-2 gap-4">
-                <Field.Group required name="name" label="Name">
-                  <Field.Input name="name" value={values.name} />
-                </Field.Group>
-
-                <Field.Group required name="name" label="Name">
-                  <Field.Input name="name" value={values.name} />
-                </Field.Group>
-
+              <div className="grid md:grid-cols-2 gap-4">
                 <Field.Group required name="name" label="Name">
                   <Field.Input name="name" value={values.name} />
                 </Field.Group>
@@ -114,6 +125,52 @@ const AddProduct = ({ children, productID }: AddProductProps) => {
                     placeholder="Select a category"
                   />
                 </Field.Group>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-4">
+                <Field.Group required name="cost_price" label="Item Price">
+                  <Field.Input name="cost_price" value={values.cost_price} />
+                </Field.Group>
+
+                <Field.Group required name="sale_price" label="Sale Price">
+                  <Field.Input name="sale_price" value={values.sale_price} />
+                </Field.Group>
+
+                <Field.Group required name="quantity" label="Quantity">
+                  <Field.Input name="quantity" value={values.quantity} />
+                </Field.Group>
+              </div>
+
+              <Field.Group required name="details" label="Product Description">
+                <Field.TextEditor
+                  content={values.details}
+                  onChange={(data: any) => {
+                    setFieldValue("details", data);
+                  }}
+                />
+              </Field.Group>
+
+              <div className="flex gap-8 justify-end mt-20">
+                <Button
+                  type="reset"
+                  onClick={() => {
+                    setShow(false);
+                  }}
+                  className="border border-neutral-10 text-white"
+                >
+                  <span className="hidden lg:block">Discard</span>
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-info text-white"
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                  disabled={!isValid}
+                  {...{ isSubmitting }}
+                >
+                  <span className="hidden lg:block">Add Product</span>
+                </Button>
               </div>
             </div>
           )}

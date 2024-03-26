@@ -5,6 +5,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { classNames } from "@/libs";
 import { ICategory } from "@/types";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 export interface ISelectOption {
   label?: string;
@@ -13,55 +14,46 @@ export interface ISelectOption {
 }
 
 export interface SelectProps {
-  isMulti?: boolean;
-  onChange?: any;
   placeholder?: string;
   options?: ISelectOption[];
-  value: any | any[];
-  component?: object;
+  value: string | undefined;
   [x: string]: any;
-  createTask?: boolean;
-  add_task?: () => void;
 }
 
-const people = [
-  { id: 1, name: "Wade Cooper" },
-  { id: 2, name: "Arlene Mccoy" },
-  { id: 3, name: "Devon Webb" },
-  { id: 4, name: "Tom Cook" },
-  { id: 5, name: "Tanya Fox" },
-  { id: 6, name: "Hellen Schmidt" },
-  { id: 7, name: "Caroline Schultz" },
-  { id: 8, name: "Mason Heaney" },
-  { id: 9, name: "Claudie Smitham" },
-  { id: 10, name: "Emil Schaefer" },
-];
-
-export default function Select({
-  isMulti = false,
+export function Select({
   options = [],
   placeholder = "",
-  component = {},
-  value = "",
-  createTask = false,
-  add_task,
-  className,
-  ...props
+  value,
+  onChange,
 }: SelectProps) {
-  const [selected, setSelected] = useState<ISelectOption>({
-    label: placeholder,
-    value: "-",
-  });
+  const [selected, setSelected] = useState<ISelectOption>(
+    options.find((option) => option.value === value)?.[0] ?? {
+      label: placeholder,
+      value: "",
+    }
+  );
 
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox
+      value={selected}
+      onChange={(value) => {
+        console.log(value);
+        setSelected(value);
+        onChange(value);
+      }}
+    >
       {({ open }) => (
         <>
-          <div className="relative">
-            <Listbox.Button className="relative w-full h-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+          <div className="relative w-full h-12">
+            <Listbox.Button
+              className={classNames(
+                "relative w-full h-full cursor-default rounded-md  py-1.5 pl-4 pr-10 text-left",
+                "bg-white dark:bg-neutral-gray"
+              )}
+            >
               <span className="block truncate">{selected.label}</span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                <ChevronUpDownIcon
+                <ChevronDownIcon
                   className="h-5 w-5 text-gray-400"
                   aria-hidden="true"
                 />
@@ -75,17 +67,24 @@ export default function Select({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {options.map((person) => (
+              <Listbox.Options
+                className={classNames(
+                  "absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md  py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm",
+                  "bg-white dark:bg-neutral-gray"
+                )}
+              >
+                {options.map((opt) => (
                   <Listbox.Option
-                    key={person.value}
+                    key={opt.value}
                     className={({ active }) =>
                       classNames(
-                        active ? "bg-indigo-600 text-white" : "text-gray-900",
+                        active
+                          ? "bg-info text-white"
+                          : "text-gray-900 dark:text-neutral-30",
                         "relative cursor-default select-none py-2 pl-3 pr-9"
                       )
                     }
-                    value={person}
+                    value={opt}
                   >
                     {({ selected, active }) => (
                       <>
@@ -95,7 +94,7 @@ export default function Select({
                             "block truncate"
                           )}
                         >
-                          {person.label}
+                          {opt.label}
                         </span>
 
                         {selected ? (

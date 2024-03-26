@@ -129,6 +129,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     return NextResponse.json(
       {
         success: false,
+        error,
         message: error.message ?? "An unexpected error occurred",
       },
       { status: 500 }
