@@ -28,9 +28,9 @@ export const TextEditor = ({ content, onChange }: TextEditorProps) => {
       Highlight,
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
       StarterKit,
-      Heading.configure({
-        levels: [1],
-      }),
+      // Heading.configure({
+      //   levels: [1],
+      // }),
     ],
     content: content,
   });
