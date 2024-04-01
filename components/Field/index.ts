@@ -6,4 +6,3 @@ export * from "./search";
 export * from "./Select";
 export * from "./TextEditor";
 export * from "./Upload";
-export { default as Date } from "./Date";
