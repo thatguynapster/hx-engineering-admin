@@ -3,6 +3,7 @@ export const routes = {
   inventory: {
     index: "/dashboard/inventory",
     add: "/dashboard/inventory/add",
+    details: "/dashboard/inventory/:product_id/:tab",
     edit: "/dashboard/inventory/edit",
   },
   orders: { index: "/dashboard/orders" },

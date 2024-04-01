@@ -1,21 +1,27 @@
-import { PlusIcon } from "@heroicons/react/24/solid";
-import { startCase } from "lodash";
+"use client";
+
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import React from "react";
-import dayjs from "dayjs";
-import { Badge, Field, Table } from "@/components";
+
+import { Table } from "@/components";
 import { classNames } from "@/libs";
 import { IProduct } from "@/types";
+import { routes } from "@/routes";
 
-const TableBody = ({
-  data,
-  onMutate,
-}: {
-  data: IProduct;
-  onMutate: () => void;
-}) => {
+const TableBody = ({ data }: { data: IProduct }) => {
+  const router = useRouter();
   return (
-    <tr className="dark:text-neutral-10 cursor-pointer hover:bg-neutral-10 dark:hover:bg-neutral-50 my-2">
+    <tr
+      className="dark:text-neutral-10 cursor-pointer hover:bg-neutral-10 dark:hover:bg-neutral-50 my-2"
+      onClick={() => {
+        router.push(
+          routes.inventory.details
+            .replace(":product_id", data._id)
+            .replace(":tab", "overview")
+        );
+      }}
+    >
       <Table.TD>
         <div
           className={classNames(
@@ -54,7 +60,9 @@ const TableBody = ({
       </Table.TD>
 
       <Table.TD className="flex justify-center">
-        <span className="whitespace-nowrap truncate">{data.category}</span>
+        <span className="whitespace-nowrap truncate">
+          {data.category_details?.name ?? "n/a"}
+        </span>
       </Table.TD>
 
       <Table.TD

@@ -1,22 +1,22 @@
 "use client";
 
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { FormikHelpers } from "formik";
+import queryString from "query-string";
 import toast from "react-hot-toast";
 import useSWR from "swr";
-import queryString from "query-string";
 
+import AddProduct from "@/components/pages/inventory/add-product";
 import TableBody from "@/components/pages/inventory/table-body";
 import { TablePagination } from "@/components/Table";
+import { createProductService } from "@/services";
+import { IApiResponse, IProduct } from "@/types";
 import { Button, Table } from "@/components";
 import { FiltersProps } from "@/types/ui";
-import { classNames, http } from "@/libs";
-import { IApiResponse, IProduct } from "@/types";
+import { classNames } from "@/libs";
 import { useStore } from "@/hooks";
-import { useRouter } from "next/navigation";
-import AddProduct from "@/components/pages/inventory/add-product";
-import { FormikHelpers } from "formik";
-import { createProductService } from "@/services";
 
 const Products = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const Products = () => {
   const [filters, setFilters] = useState<Partial<FiltersProps>>({ page: 1 });
 
   const { data, isLoading, error, mutate } = useSWR<IApiResponse>(
-    store && `/products?${queryString.stringify({ ...filters })}`
+    `/products?${queryString.stringify({ category_details: true, ...filters })}`
   );
 
   const uploadProduct = async (
@@ -143,13 +143,7 @@ const Products = () => {
               {!data.docs.length && <Table.Empty field="orders" />}
 
               {data.docs.map((product, key) => (
-                <TableBody
-                  key={key}
-                  data={product}
-                  onMutate={function (): void {
-                    toast.error("Function not implemented.");
-                  }}
-                />
+                <TableBody key={key} data={product} />
               ))}
             </>
           )}
