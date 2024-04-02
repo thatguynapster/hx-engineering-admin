@@ -27,9 +27,9 @@ export const updateProductSchema = async (
     images: Joi.array().items(Joi.string()).min(1),
     features: Joi.object().keys().unknown(true),
     category: Joi.string(),
-    quantity: Joi.string(),
-    sale_price: Joi.string(),
-    cost_price: Joi.string(),
+    quantity: Joi.number(),
+    sale_price: Joi.number(),
+    cost_price: Joi.number(),
   });
 
   return await schema.validateAsync(updateProductBody);

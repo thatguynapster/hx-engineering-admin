@@ -2,9 +2,8 @@
 
 import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { CheckIcon } from "@heroicons/react/20/solid";
 import { classNames } from "@/libs";
-import { ICategory } from "@/types";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 export interface ISelectOption {
@@ -27,7 +26,7 @@ export function Select({
   onChange,
 }: SelectProps) {
   const [selected, setSelected] = useState<ISelectOption>(
-    options.find((option) => option.value === value)?.[0] ?? {
+    options.find((option) => option.value === value) ?? {
       label: placeholder,
       value: "",
     }
@@ -37,7 +36,6 @@ export function Select({
     <Listbox
       value={selected}
       onChange={(value) => {
-        console.log(value);
         setSelected(value);
         onChange(value);
       }}

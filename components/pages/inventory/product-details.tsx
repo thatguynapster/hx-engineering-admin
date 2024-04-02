@@ -22,11 +22,19 @@ const ProductOverview = ({ data }: { data: IProduct }) => {
               <p>
                 <span>Quantity</span>
               </p>
+              <p>
+                <span>Cost</span>
+              </p>
+              <p>
+                <span>Sale Price</span>
+              </p>
             </div>
             <div className="flex flex-col gap-6 w-1/3">
               <p className="truncate">{data.name}</p>
               <p className="truncate">{data.category_details?.name ?? "n/a"}</p>
               <p className="truncate">{data.quantity}</p>
+              <p className="truncate">&#8373;{data.cost_price.toFixed(2)}</p>
+              <p className="truncate">&#8373;{data.sale_price.toFixed(2)}</p>
             </div>
           </div>
         </div>

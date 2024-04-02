@@ -1,6 +1,6 @@
 import { Button, Field, Modal } from "@/components";
-import { useStore } from "@/hooks";
-import { schema } from "@/libs";
+import { useProduct, useStore } from "@/hooks";
+import { classNames, schema } from "@/libs";
 import { uploadProductImageService } from "@/services";
 import { IApiResponse, ICategory, IProduct } from "@/types";
 import { Formik, FormikHelpers } from "formik";
@@ -10,7 +10,7 @@ import { object } from "yup";
 
 interface AddProductProps {
   children: (props: { proceed: () => void }) => ReactNode;
-  productID?: IProduct;
+  productID?: string;
   onAdd: (
     values: Partial<IProduct>,
     actions: FormikHelpers<Partial<IProduct>>,
@@ -22,16 +22,15 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
   const { store } = useStore();
   const [show, setShow] = useState<boolean>(false);
 
-  // const product = useSWR<IProduct>(productID && ``);
+  const { data } = useProduct(productID, { category_details: true });
 
-  const { data } = useSWR<IApiResponse>("/categories");
+  const { data: categoriesDAta } = useSWR<IApiResponse>("/categories");
   const categories = (() => {
-    return data?.docs.map((category: any) => ({
+    return categoriesDAta?.docs.map((category: any) => ({
       value: category._id,
       label: category.name,
     }));
   })();
-  console.log(categories);
 
   return (
     <>
@@ -54,14 +53,16 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
             sale_price: schema.requireNumber("Product Sale Price").min(1),
             quantity: schema.requireNumber("Product Quantity").min(1),
             details: schema.requireString("Product Details"),
+            category: schema.requireString("Category"),
           })}
           initialValues={{
-            images: [] as string[],
-            cost_price: 0,
-            sale_price: 0,
-            quantity: 0,
-            details: "",
-            name: "",
+            images: data?.images as string[],
+            cost_price: data?.cost_price ?? 0,
+            sale_price: data?.sale_price ?? 0,
+            quantity: data?.quantity ?? 0,
+            details: data?.details ?? "",
+            name: data?.name ?? "",
+            category: data?.category ?? "",
           }}
           onSubmit={(values: Partial<IProduct>, actions) => {
             onAdd(values, actions, () => setShow(false));
@@ -89,18 +90,14 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
 
                   const fd = new FormData();
                   fd.append("file", file);
-                  await uploadProductImageService(fd, store.token!).then(
-                    (resp) => {
-                      console.log(resp, values.images, values.images!.length);
-                      if (!values.images!.length) {
-                        return setFieldValue("images", [resp]);
-                      }
-                      setFieldValue("images", [...values.images!, resp]);
+                  await uploadProductImageService(fd).then((resp) => {
+                    if (!values.images!.length) {
+                      return setFieldValue("images", [resp]);
                     }
-                  );
+                    setFieldValue("images", [...values.images!, resp]);
+                  });
                 }}
                 removeFile={(index) => {
-                  console.log(index);
                   let temp = [...values.images!];
                   temp.splice(index, 1);
                   setFieldValue("images", temp);
@@ -116,7 +113,6 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
                 <Field.Group required name="name" label="Name">
                   <Field.Select
                     name="category"
-                    defaultValue={""}
                     value={values.category}
                     options={categories ?? []}
                     onChange={({ value }: { value: string }) => {
@@ -156,9 +152,12 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
                   onClick={() => {
                     setShow(false);
                   }}
-                  className="border border-neutral-10 text-white"
+                  className={classNames(
+                    "border",
+                    "border-neutral-30 dark:border-neutral-10"
+                  )}
                 >
-                  <span className="hidden lg:block">Discard</span>
+                  Discard
                 </Button>
                 <Button
                   type="submit"
@@ -169,7 +168,7 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
                   disabled={!isValid}
                   {...{ isSubmitting }}
                 >
-                  <span className="hidden lg:block">Add Product</span>
+                  {productID ? "Update" : "Add"} Product
                 </Button>
               </div>
             </div>

@@ -13,7 +13,7 @@ const TableBody = ({ data }: { data: IProduct }) => {
   const router = useRouter();
   return (
     <tr
-      className="dark:text-neutral-10 cursor-pointer hover:bg-neutral-10 dark:hover:bg-neutral-50 my-2"
+      className="dark:text-neutral-10 cursor-pointer hover:bg-neutral-10 dark:hover:bg-neutral-dark my-2"
       onClick={() => {
         router.push(
           routes.inventory.details
@@ -48,11 +48,15 @@ const TableBody = ({ data }: { data: IProduct }) => {
       </Table.TD>
 
       <Table.TD className="flex justify-end">
-        <span className="whitespace-nowrap">&#8373;{data.cost_price}</span>
+        <span className="whitespace-nowrap">
+          &#8373;{data.cost_price.toFixed(2)}
+        </span>
       </Table.TD>
 
       <Table.TD className="flex justify-end">
-        <span className="whitespace-nowrap">&#8373;{data.sale_price}</span>
+        <span className="whitespace-nowrap">
+          &#8373;{data.sale_price.toFixed(2)}
+        </span>
       </Table.TD>
 
       <Table.TD className="flex justify-center">

@@ -15,7 +15,7 @@ function Table({ children, containerClassName, ...props }: TableProps) {
     <div className="flow-root">
       <div className="overflow-x-auto">
         <div className="inline-block min-w-full py-2 align-middle">
-          <table className="min-w-full divide-y divide-neutral-50">
+          <table className="min-w-full divide-y divide-neutral-20 dark:divide-neutral-50">
             {children}
           </table>
         </div>

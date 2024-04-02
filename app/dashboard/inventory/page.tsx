@@ -32,11 +32,8 @@ const Products = () => {
     actions: FormikHelpers<Partial<IProduct>>,
     hide: () => void
   ) => {
-    console.log(values);
-
-    await createProductService(values, store.token!)
+    await createProductService(values)
       .then((resp) => {
-        console.log(resp);
         mutate();
       })
       .catch((error) => console.log(error))
@@ -116,7 +113,7 @@ const Products = () => {
           </tr>
         </thead>
         {/* <tbody className="flex flex-col gap-2"> */}
-        <tbody className="divide-y divide-neutral-50">
+        <tbody className="divide-y divide-neutral-20 dark:divide-neutral-50">
           {/* loading state */}
           {isLoading && (
             <>

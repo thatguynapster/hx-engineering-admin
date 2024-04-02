@@ -70,7 +70,6 @@ export function Upload({
         className="hidden"
         accept={format.join(", ")}
         onChange={({ currentTarget: { files } }) => {
-          console.log(files);
           if (files?.[0]) {
             onValueChanged(files[0]);
             setTimeout(() => setFieldTouched(name, true));

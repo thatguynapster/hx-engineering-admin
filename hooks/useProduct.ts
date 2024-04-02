@@ -3,7 +3,7 @@ import queryString from "query-string";
 import { IApiResponse, IProduct } from "@/types";
 
 export function useProduct(
-  id: string,
+  id?: string,
   queries?: Partial<{
     category_details: boolean;
   }>

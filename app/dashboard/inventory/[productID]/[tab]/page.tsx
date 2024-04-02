@@ -13,6 +13,7 @@ import { useParams, useRouter } from "next/navigation";
 import { routes } from "@/routes";
 import ProductOverview from "@/components/pages/inventory/product-details";
 import { useProduct } from "@/hooks";
+import { updateProductService } from "@/services";
 
 const ProductDetails = ({
   params,
@@ -24,21 +25,24 @@ const ProductDetails = ({
   const { productID, tab } = params;
   const [activeKey, setActiveKey] = useState<string>(tab);
 
-  const { data, isLoading, error } = useProduct(productID, {
+  const { data, isLoading, mutate, error } = useProduct(productID, {
     category_details: true,
   });
-  console.log(data);
 
-  const updateProduct = (
+  const updateProduct = async (
     values: Partial<IProduct>,
     actions: FormikHelpers<Partial<IProduct>>,
     hide: () => void
   ) => {
-    console.log(values);
-    setTimeout(() => {
-      actions.setSubmitting(false);
-      hide();
-    }, 3000);
+    await updateProductService(productID, values)
+      .then((resp) => {
+        mutate();
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        actions.setSubmitting(false);
+        hide();
+      });
   };
 
   return (
@@ -78,7 +82,7 @@ const ProductDetails = ({
             </div>
 
             <div className="flex">
-              <AddProduct onAdd={updateProduct} productID={tab[0]}>
+              <AddProduct onAdd={updateProduct} {...{ productID }}>
                 {({ proceed }) => (
                   <Button
                     type="button"
