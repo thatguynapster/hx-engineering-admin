@@ -38,7 +38,14 @@ const ProductOverview = ({ data }: { data: IProduct }) => {
               <p className="truncate">&#8373;{data.sale_price.toFixed(2)}</p>
             </div>
 
-            <div className="w-[170px] h-[170px] bg-center bg-no-repeat bg-cover rounded-2xl border-2 border-dashed border-neutral-40">
+            <div
+              className={classNames(
+                "w-[170px] h-[170px]",
+                "bg-center bg-no-repeat bg-cover",
+                "bg-white dark:bg-neutral-gray",
+                "rounded-2xl border-2 border-dashed border-neutral-40"
+              )}
+            >
               <Image
                 width={170}
                 height={170}
