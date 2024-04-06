@@ -19,6 +19,7 @@ export interface ISalesDocument extends Model<ISales> {
 
 const saleSchema = new Schema<ISales>(
   {
+    code: { type: String, required: true },
     discount: { type: String, default: null },
     is_dev: { type: Boolean, default: false },
     products: [

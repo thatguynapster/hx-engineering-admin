@@ -10,6 +10,7 @@ import {
 } from "@/models";
 import { IDiscount, IProduct, ISales } from "@/types";
 import { Types } from "mongoose";
+import { randomString } from "@/libs";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   await dbConnect();
@@ -30,7 +31,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         { status: 400 }
       );
     }
-    console.log(missingProducts);
 
     const unavailableProducts = await findUnavailableProducts(
       saleBody.products
@@ -60,9 +60,11 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     const productsWithPrices = await addProductPrices(saleBody.products);
 
-    console.log(saleBody);
+    const saleCode = await randomString(6, "A#");
+
     const sale = new SaleCollection({
       ...saleBody,
+      code: saleCode,
       products: productsWithPrices,
       _id: new Types.ObjectId(),
       is_dev: process.env.NODE_ENV === "development",
