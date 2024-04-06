@@ -7,7 +7,7 @@ export const routes = {
     edit: "/dashboard/inventory/edit",
   },
   orders: { index: "/dashboard/orders" },
-  team: { index: "/dashboard/team" },
+  // team: { index: "/dashboard/team" },
 };
 
 /**

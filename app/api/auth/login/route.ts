@@ -5,7 +5,6 @@ import { loginSchema } from "@/validators";
 import { UserCollection } from "@/models";
 import { IUser } from "@/types";
 import jwt from "jsonwebtoken";
-import { corsOptions } from "@/configs";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   try {

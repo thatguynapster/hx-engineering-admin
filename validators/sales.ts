@@ -15,6 +15,10 @@ export const createSalesSchema = async (
       )
       .min(1)
       .required(),
+    user: Joi.object({
+      name: Joi.string().required(),
+      phone: Joi.string().required(),
+    }).required(),
   });
 
   return await schema.validateAsync(createSalesBody);

@@ -29,6 +29,13 @@ const saleSchema = new Schema<ISales>(
       },
     ],
     price: { type: Number },
+    user: {
+      _id: { type: String, default: null },
+      name: { type: String, required: true },
+      email: { type: String, default: null },
+      phone: { type: String, required: true },
+    },
+    completed: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

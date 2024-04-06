@@ -13,4 +13,11 @@ export type ISales = {
   }[];
   price: number;
   discount_details?: IDiscount;
+  user: {
+    _id?: Types.ObjectId;
+    name: string;
+    phone: string;
+    email?: string;
+  };
+  completed: boolean;
 };
