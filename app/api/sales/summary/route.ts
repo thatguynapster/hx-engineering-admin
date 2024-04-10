@@ -35,7 +35,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 
     // completed orders
     const completed_orders = (() => {
-      const completed = sales.filter((s) => s.completed);
+      const completed = sales.filter((s) => s.status === "COMPLETED");
       return {
         count: completed.length,
         amount: completed.reduce((acc, s) => acc + s.price, 0),
@@ -44,7 +44,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 
     // pending orders
     const pending_orders = (() => {
-      const pending = sales.filter((s) => !s.completed);
+      const pending = sales.filter((s) => s.status === "PENDING" || !s.status);
       return {
         count: pending.length,
         amount: pending.reduce((acc, s) => acc + s.price, 0),
