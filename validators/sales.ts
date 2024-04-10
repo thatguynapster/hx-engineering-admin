@@ -23,3 +23,15 @@ export const createSalesSchema = async (
 
   return await schema.validateAsync(createSalesBody);
 };
+
+export const updateStatusSchema = async (updateStatusBody: {
+  status: ISales["status"];
+}): Promise<ISales> => {
+  const schema = Joi.object({
+    status: Joi.string()
+      .valid("PENDING", "READY_FOR_DELIVERY", "COMPLETED")
+      .required(),
+  });
+
+  return await schema.validateAsync(updateStatusBody);
+};

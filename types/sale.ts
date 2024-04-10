@@ -20,5 +20,5 @@ export type ISales = {
     phone: string;
     email?: string;
   };
-  completed: boolean;
+  status: "PENDING" | "READY_FOR_DELIVERY" | "COMPLETED";
 };

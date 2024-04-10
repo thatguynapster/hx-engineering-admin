@@ -36,7 +36,7 @@ const saleSchema = new Schema<ISales>(
       email: { type: String, default: null },
       phone: { type: String, required: true },
     },
-    completed: { type: Boolean, default: false },
+    status: { type: String, default: "PENDING" },
   },
   { timestamps: true }
 );
