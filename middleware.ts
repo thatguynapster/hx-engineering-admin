@@ -83,6 +83,11 @@ export async function middleware(req: NextRequest) {
 
     const authorization = req.headers.get("Authorization");
 
+    console.log(req.method);
+    if (req.method === "OPTIONS") {
+      return null;
+    }
+
     if (!authorization) {
       return Response.json(
         {
