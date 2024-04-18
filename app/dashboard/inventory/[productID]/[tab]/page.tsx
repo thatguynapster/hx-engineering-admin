@@ -2,14 +2,13 @@
 
 import { FormikHelpers } from "formik";
 import React, { useState } from "react";
-import useSWR from "swr";
 
 import AddProduct from "@/components/pages/inventory/add-product";
 import { ChevronLeftIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { Button, Tabs } from "@/components";
 import { classNames } from "@/libs";
 import { IProduct } from "@/types";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { routes } from "@/routes";
 import ProductOverview from "@/components/pages/inventory/product-details";
 import { useProduct } from "@/hooks";
@@ -55,7 +54,7 @@ const ProductDetails = ({
         "bg-white dark:bg-neutral-gray"
       )}
     >
-      <div className="md:flex md:items-center md:justify-between">
+      <div className="flex items-center justify-between">
         {isLoading && (
           <>
             <div className="w-40 h-[38px] bg-neutral-50 animate-pulse rounded-lg" />
@@ -78,7 +77,9 @@ const ProductDetails = ({
                   <ChevronLeftIcon className="w-5 h-5" />
                 </Button>
               </div>
-              <h3 className="text-base font-semibold leading-6">{data.name}</h3>
+              <h3 className="text-base font-semibold leading-6 truncate">
+                {data.name}
+              </h3>
             </div>
 
             <div className="flex">

@@ -1,11 +1,9 @@
 "use client";
 
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FormikHelpers } from "formik";
 import queryString from "query-string";
-import toast from "react-hot-toast";
 import useSWR from "swr";
 
 import AddProduct from "@/components/pages/inventory/add-product";
@@ -16,11 +14,8 @@ import { IApiResponse, IProduct } from "@/types";
 import { Button, Table } from "@/components";
 import { FiltersProps } from "@/types/ui";
 import { classNames } from "@/libs";
-import { useStore } from "@/hooks";
 
 const Products = () => {
-  const router = useRouter();
-  const { store } = useStore();
   const [filters, setFilters] = useState<Partial<FiltersProps>>({ page: 1 });
 
   const { data, isLoading, error, mutate } = useSWR<IApiResponse>(
@@ -33,7 +28,7 @@ const Products = () => {
     hide: () => void
   ) => {
     await createProductService(values)
-      .then((resp) => {
+      .then(() => {
         mutate();
       })
       .catch((error) => console.log(error))

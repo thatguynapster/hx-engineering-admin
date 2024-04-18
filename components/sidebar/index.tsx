@@ -1,46 +1,33 @@
-import { Fragment, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
-  Cog6ToothIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import {
-  ChevronDownIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/20/solid";
+import { HomeIcon, UsersIcon } from "@heroicons/react/24/outline";
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment } from "react";
 import Image from "next/image";
+
+import { usePathname } from "next/navigation";
 import { classNames } from "@/libs";
 import { Icons } from "..";
-import { usePathname } from "next/navigation";
+import { routes } from "@/routes";
 
 const navigation = [
-  {
-    name: "Dashboard",
-    href: "/dashboard/overview",
-    icon: HomeIcon,
-    current: true,
-  },
+  // {
+  //   name: "Dashboard",
+  //   href: "/dashboard/overview",
+  //   icon: HomeIcon,
+  //   current: true,
+  // },
   {
     name: "Inventory",
-    href: "/dashboard/inventory",
+    href: routes.inventory.index,
     icon: Icons.Inventory,
     current: false,
   },
   {
     name: "Orders",
-    href: "/dashboard/orders",
+    href: routes.orders.index,
     icon: Icons.Orders,
     current: false,
   },
-  { name: "Team", href: "/dashboard/team", icon: UsersIcon, current: false },
+  // { name: "Team", href: "/dashboard/team", icon: UsersIcon, current: false },
 ];
 
 export const Sidebar = ({

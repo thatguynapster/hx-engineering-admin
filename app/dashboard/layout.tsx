@@ -39,9 +39,9 @@ export default function RootLayout({
               headers: { Authorization: `Bearer ${store.token}` },
             })
             .then((response: any) => response),
-        dedupingInterval: 1000 * 60 * 1,
+        dedupingInterval: 1000 * 60,
         shouldRetryOnError: false,
-        revalidateOnFocus: false,
+        refreshInterval: 1000 * 60,
       }}
     >
       <Sidebar {...{ toggle, setToggle }} />
@@ -52,7 +52,7 @@ export default function RootLayout({
           className={classNames(
             "bg-neutral-30 dark:bg-neutral-dark",
             "min-h-[calc(100vh-64px)]",
-            "p-4 sm:px-6 lg:px-8"
+            "p-6 sm:px-6 lg:px-8"
           )}
         >
           {children}

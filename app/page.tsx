@@ -1,7 +1,7 @@
 "use client";
 
-import { Form, Formik, FormikHelpers } from "formik";
 import { useRouter } from "next/navigation";
+import { Form, Formik } from "formik";
 import Image from "next/image";
 import { object } from "yup";
 
@@ -34,13 +34,12 @@ export default function Home() {
             user: data.user,
             token: data.token,
           }));
+          toast.success("Login successful");
           setTimeout(() => router.push(DEFAULT_LOGIN_REDIRECT));
         })
         .catch((error) => {
           toast.error("Login failed");
         });
-
-      // router.push("/dashboard/inventory");
     } catch (error: any) {
       setError(error.message ?? "Failed to log in");
     }

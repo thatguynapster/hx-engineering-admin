@@ -31,7 +31,7 @@ const TableBody = ({ data }: { data: IProduct }) => {
             "w-max"
           )}
         >
-          <div className="w-[60px] h-[70px] bg-white bg-center bg-no-repeat bg-cover rounded-md">
+          <div className="w-[60px] h-[70px] bg-center bg-no-repeat bg-cover rounded-md">
             <Image
               width={60}
               height={70}

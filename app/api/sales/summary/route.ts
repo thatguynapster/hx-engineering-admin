@@ -9,7 +9,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 
   const from_date =
     req.nextUrl.searchParams.get("from_date") ??
-    dayjs().subtract(7, "days").startOf("day").toDate();
+    dayjs().subtract(30, "days").startOf("day").toDate();
   const to_date =
     req.nextUrl.searchParams.get("to_date") ?? dayjs().endOf("day").toDate();
 
@@ -28,13 +28,13 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       );
     }
 
-    const total_orders = {
+    const total = {
       count: sales.length,
       amount: sales.reduce((acc, s) => acc + s.price, 0),
     };
 
     // completed orders
-    const completed_orders = (() => {
+    const completed = (() => {
       const completed = sales.filter((s) => s.status === "COMPLETED");
       return {
         count: completed.length,
@@ -43,7 +43,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     })();
 
     // pending orders
-    const pending_orders = (() => {
+    const pending = (() => {
       const pending = sales.filter((s) => s.status === "PENDING" || !s.status);
       return {
         count: pending.length,
@@ -56,9 +56,9 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
         success: true,
         message: "Sales found",
         response: {
-          total_orders,
-          completed_orders,
-          pending_orders,
+          total,
+          completed,
+          pending,
         },
       },
       { status: 200 }

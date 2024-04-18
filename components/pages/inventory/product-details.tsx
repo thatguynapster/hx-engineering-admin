@@ -11,31 +11,35 @@ const ProductOverview = ({ data }: { data: IProduct }) => {
           <h3 className={classNames("font-semibold", "dark:text-neutral-50")}>
             Details
           </h3>
-          <div className="flex w-full items-center">
-            <div className="flex flex-col gap-6 w-1/2">
-              <p>
-                <span>Name</span>
-              </p>
-              <p>
-                <span>Category</span>
-              </p>
-              <p>
-                <span>Quantity</span>
-              </p>
-              <p>
-                <span>Cost</span>
-              </p>
-              <p>
-                <span>Sale Price</span>
-              </p>
-            </div>
+          <div className="flex flex-col md:flex-row w-full items-center gap-4">
+            <div className="flex flex-grow gap-4 w-full md:w-max">
+              <div className="flex flex-col gap-6 w-full">
+                <p>
+                  <span>Name</span>
+                </p>
+                <p>
+                  <span>Category</span>
+                </p>
+                <p>
+                  <span>Quantity</span>
+                </p>
+                <p>
+                  <span>Cost</span>
+                </p>
+                <p>
+                  <span>Sale Price</span>
+                </p>
+              </div>
 
-            <div className="flex flex-col gap-6 w-1/3">
-              <p className="truncate">{data.name}</p>
-              <p className="truncate">{data.category_details?.name ?? "n/a"}</p>
-              <p className="truncate">{data.quantity}</p>
-              <p className="truncate">&#8373;{data.cost_price.toFixed(2)}</p>
-              <p className="truncate">&#8373;{data.sale_price.toFixed(2)}</p>
+              <div className="flex flex-col gap-6 w-full">
+                <p className="truncate">{data.name}</p>
+                <p className="truncate">
+                  {data.category_details?.name ?? "n/a"}
+                </p>
+                <p className="truncate">{data.quantity}</p>
+                <p className="truncate">&#8373;{data.cost_price.toFixed(2)}</p>
+                <p className="truncate">&#8373;{data.sale_price.toFixed(2)}</p>
+              </div>
             </div>
 
             <div

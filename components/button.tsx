@@ -33,8 +33,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           props.className
         )}
       >
-        {isSubmitting ? <Spinner /> : ""}
-        <div className="flex items-center gap-2">{children}</div>
+        {isSubmitting && <Spinner />}
+        {children && <div className="flex items-center gap-2">{children}</div>}
       </button>
     );
   }
