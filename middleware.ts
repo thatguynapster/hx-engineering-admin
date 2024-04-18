@@ -73,11 +73,6 @@ export async function middleware(req: NextRequest) {
   if (isAuthRoute) {
     console.log("is auth page route");
 
-    console.log(req.method);
-    if (req.method === "OPTIONS") {
-      return null;
-    }
-
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
@@ -88,11 +83,6 @@ export async function middleware(req: NextRequest) {
     console.log("is api route");
 
     const authorization = req.headers.get("Authorization");
-
-    console.log(req.method);
-    if (req.method === "OPTIONS") {
-      return null;
-    }
 
     if (!authorization) {
       return Response.json(

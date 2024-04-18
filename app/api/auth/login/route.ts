@@ -110,3 +110,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     return new NextResponse("Error logging in: " + error, { status: 500 });
   }
 };
+
+export const OPTIONS = async (req: NextRequest, res: NextResponse) => {
+  return new NextResponse("", { status: 200 });
+};
