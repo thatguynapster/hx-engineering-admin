@@ -72,6 +72,12 @@ export async function middleware(req: NextRequest) {
 
   if (isAuthRoute) {
     console.log("is auth page route");
+
+    console.log(req.method);
+    if (req.method === "OPTIONS") {
+      return null;
+    }
+
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
