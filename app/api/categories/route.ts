@@ -37,7 +37,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     const categories = await CategoryCollection.paginate(
       {
         is_deleted: { $ne: true },
-        is_dev: process.env.NODE_ENV === "development",
+        is_dev: process.env.ENVIRONMENT === "development",
       },
       { lean: true, limit, page, sort: { _id: -1 } }
     );

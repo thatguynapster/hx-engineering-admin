@@ -67,7 +67,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       code: saleCode,
       products: productsWithPrices,
       _id: new Types.ObjectId(),
-      is_dev: process.env.NODE_ENV === "development",
+      is_dev: process.env.ENVIRONMENT === "development",
       price: totalPrice,
     });
 
@@ -114,10 +114,11 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     const sales = await SaleCollection.paginate(
       {
         is_deleted: { $ne: true },
-        is_dev: process.env.NODE_ENV === "development",
+        is_dev: process.env.ENVIRONMENT === "development",
       },
       { lean: true, limit, page, sort: { _id: -1 } }
     );
+    console.log(sales);
 
     // get product details for each sale
     if (product_details) {
@@ -152,7 +153,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
         sales.docs.map(async (sale: ISales) => {
           const discountDetails = (await DiscountCollection.findOne({
             _id: sale.discount,
-            is_dev: process.env.NODE_ENV === "development",
+            is_dev: process.env.ENVIRONMENT === "development",
           }).lean()) as IDiscount;
 
           sale.discount_details = discountDetails;
@@ -197,7 +198,7 @@ async function findMissingProducts(
       const productDetails = await ProductCollection.findOne({
         _id: productId,
         is_deleted: false,
-        is_dev: process.env.NODE_ENV === "development",
+        is_dev: process.env.ENVIRONMENT === "development",
       });
       return productDetails ? null : productId;
     })
@@ -232,7 +233,7 @@ async function calculateTotalPrice(
       const productDetails = await ProductCollection.findOne({
         _id: productId,
         is_deleted: false,
-        is_dev: process.env.NODE_ENV === "development",
+        is_dev: process.env.ENVIRONMENT === "development",
       });
       totalPrice += productDetails?.sale_price || 0;
     })
@@ -244,7 +245,7 @@ async function findDiscount(discountId: string): Promise<boolean> {
   const discountExists = await DiscountCollection.findOne({
     _id: discountId,
     is_deleted: false,
-    is_dev: process.env.NODE_ENV === "development",
+    is_dev: process.env.ENVIRONMENT === "development",
   });
   return !!discountExists;
 }
@@ -256,7 +257,7 @@ async function addProductPrices(products: ISales["products"]) {
     const productDetails = await ProductCollection.findOne({
       _id: product._id,
       is_deleted: false,
-      is_dev: process.env.NODE_ENV === "development",
+      is_dev: process.env.ENVIRONMENT === "development",
     });
 
     if (productDetails) {

@@ -41,7 +41,7 @@ export const GET = async (
         sale.products.map(async (product) => {
           const product_details = (await ProductCollection.findOne({
             _id: product._id,
-            is_dev: process.env.NODE_ENV === "development",
+            is_dev: process.env.ENVIRONMENT === "development",
           }).lean()) as IProduct;
 
           if (product_details) {
