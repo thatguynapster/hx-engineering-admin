@@ -184,7 +184,7 @@ const Orders = () => {
 
             {/* error */}
             {error && !isLoading && (
-              <Table.Error field="sales" className="py-20" />
+              <Table.Error field="orders" className="py-20" />
             )}
 
             {data && !error && (
