@@ -23,6 +23,12 @@ const reviewSchema = new Schema<IReview>(
     product: { type: String, required: true },
     rating: { type: Number, required: true },
     is_dev: { type: Boolean, default: false },
+    user: {
+      _id: { type: String, default: null },
+      name: { type: String, required: true },
+      email: { type: String, default: null },
+      phone: { type: String, required: true },
+    },
   },
   { timestamps: true }
 );

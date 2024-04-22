@@ -32,7 +32,7 @@ export const GET = async (
           success: false,
           message: "Product not found",
         },
-        { status: 200 }
+        { status: 400 }
       );
     }
 
@@ -83,7 +83,7 @@ export const PUT = async (
           success: false,
           message: "Product not found",
         },
-        { status: 200 }
+        { status: 400 }
       );
     }
 
@@ -145,7 +145,7 @@ export const DELETE = async (
           success: false,
           message: "Product not found",
         },
-        { status: 200 }
+        { status: 400 }
       );
     }
 

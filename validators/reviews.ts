@@ -8,6 +8,10 @@ export const createReviewSchema = async (
     text: Joi.string().required(),
     product: Joi.string().required(),
     rating: Joi.number().required(),
+    user: Joi.object({
+      name: Joi.string().required(),
+      phone: Joi.string().required(),
+    }).required(),
   });
 
   return await schema.validateAsync(createCategoryBody);

@@ -26,7 +26,6 @@ const Orders = () => {
     error: summaryError,
     mutate: summaryMutate,
   } = useSWR(`/sales/summary?${queryString.stringify({ ...filters })}`);
-  console.log("summary: ", summaryData);
 
   return (
     <div className="flex flex-col gap-6">

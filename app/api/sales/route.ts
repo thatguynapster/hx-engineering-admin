@@ -60,7 +60,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     const productsWithPrices = await addProductPrices(saleBody.products);
 
-    const saleCode = await randomString(6, "A#");
+    const saleCode = randomString(6, "A#");
 
     const sale = new SaleCollection({
       ...saleBody,
@@ -118,7 +118,6 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       },
       { lean: true, limit, page, sort: { _id: -1 } }
     );
-    console.log(sales);
 
     // get product details for each sale
     if (product_details) {

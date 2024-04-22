@@ -36,7 +36,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     // @ts-ignore this is valid
     const categories = await CategoryCollection.paginate(
       {
-        is_deleted: { $ne: true },
+        is_deleted: false,
         is_dev: process.env.ENVIRONMENT === "development",
       },
       { lean: true, limit, page, sort: { _id: -1 } }
@@ -88,7 +88,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
           success: false,
           message: "Product with the same name already exists",
         },
-        { status: 204 }
+        { status: 400 }
       );
     }
 

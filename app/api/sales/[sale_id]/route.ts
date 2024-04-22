@@ -31,7 +31,7 @@ export const GET = async (
           success: false,
           message: "Sale not found",
         },
-        { status: 200 }
+        { status: 400 }
       );
     }
 

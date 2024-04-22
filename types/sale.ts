@@ -2,7 +2,6 @@ import { Types } from "mongoose";
 import { IDiscount, IProduct } from ".";
 
 export type ISales = {
-  _id: Types.ObjectId;
   code: string;
   discount: string;
   is_dev: boolean;
