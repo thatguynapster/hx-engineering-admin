@@ -106,7 +106,7 @@ export async function middleware(req: NextRequest) {
     return response;
   }
 
-  if (!isLoggedIn && !isPublicRoute) {
+  if (!isLoggedIn && !isPublicRoute && !nextUrl.pathname.includes("/signup")) {
     return Response.redirect(new URL("/", nextUrl));
   }
 
