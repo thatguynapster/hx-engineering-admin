@@ -8,8 +8,12 @@ export async function dbConnect() {
     return;
   }
 
-  const db = await mongoose.connect(process.env.MONGODB_URL!);
-  console.log("Database connected");
+  try {
+    const db = await mongoose.connect(process.env.MONGODB_URL!);
+    console.log("Database connected");
 
-  connection.isConnected = db.connections[0].readyState;
+    connection.isConnected = db.connections[0].readyState;
+  } catch (error) {
+    console.log("Error connecting to database: ", error);
+  }
 }

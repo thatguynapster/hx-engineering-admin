@@ -10,9 +10,9 @@ export const PUT = async (
   { params }: { params: { sale_id: string } },
   res: NextResponse
 ) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const { sale_id } = params;
     const reqBody = await req.json();
     const saleBody = await updateStatusSchema(reqBody);

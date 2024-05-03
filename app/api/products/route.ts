@@ -10,6 +10,7 @@ import { ICategory, IProduct } from "@/types";
 export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
     await dbConnect();
+
     const limit =
       (req.nextUrl.searchParams.get("limit") as unknown as number) ?? 10;
     const page =
@@ -89,9 +90,9 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 };
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const reqBody = await req.json();
 
     const productBody = await createProductSchema(reqBody);
@@ -136,6 +137,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   }
 };
 
-export const OPTIONS = async () => {
-  return new NextResponse("", { status: 200 });
-};
+// export const OPTIONS = async () => {
+//   console.log("in options");
+//   return new NextResponse("", { status: 200 });
+// };

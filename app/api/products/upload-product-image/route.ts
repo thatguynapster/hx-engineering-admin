@@ -7,9 +7,9 @@ import { ProductCollection } from "@/models";
 import { dbConnect } from "@/libs/server";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const reqBody = await req.formData();
 
     const file = reqBody.get("file");

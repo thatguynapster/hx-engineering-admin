@@ -5,8 +5,6 @@ import { dbConnect } from "@/libs/server";
 import { SaleCollection } from "@/models";
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
-  await dbConnect();
-
   const from_date =
     req.nextUrl.searchParams.get("from_date") ??
     dayjs().subtract(30, "days").startOf("day").toDate();
@@ -14,6 +12,8 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     req.nextUrl.searchParams.get("to_date") ?? dayjs().endOf("day").toDate();
 
   try {
+    await dbConnect();
+
     const sales = await SaleCollection.find({
       createdAt: {
         $gte: from_date,

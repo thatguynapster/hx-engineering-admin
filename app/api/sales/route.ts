@@ -13,9 +13,9 @@ import { Types } from "mongoose";
 import { randomString } from "@/libs";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const reqBody = await req.json();
 
     const saleBody = await createSalesSchema(reqBody);
@@ -98,7 +98,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 };
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
-  await dbConnect();
   const limit =
     (req.nextUrl.searchParams.get("limit") as unknown as number) ?? 10;
   const page = (req.nextUrl.searchParams.get("page") as unknown as number) ?? 1;
@@ -110,6 +109,8 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     false;
 
   try {
+    await dbConnect();
+
     // @ts-ignore this is valid
     const sales = await SaleCollection.paginate(
       {

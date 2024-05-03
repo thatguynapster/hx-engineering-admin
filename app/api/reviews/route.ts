@@ -11,9 +11,9 @@ import { logEntry } from "@/functions/server";
 import mongoose from "mongoose";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const reqBody = await req.json();
 
     // NOTE: do this in every route
@@ -82,9 +82,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 };
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const limit =
       (req.nextUrl.searchParams.get("limit") as unknown as number) ?? 10;
     const page =

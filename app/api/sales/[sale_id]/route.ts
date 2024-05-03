@@ -9,9 +9,9 @@ export const GET = async (
   { params }: { params: { sale_id: string } },
   res: NextResponse
 ) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const { sale_id } = params;
     const product_details =
       (req.nextUrl.searchParams.get("product_details") as unknown as boolean) ??

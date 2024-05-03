@@ -11,9 +11,9 @@ export const GET = async (
   { params }: { params: { product_id: string } },
   res: NextResponse
 ) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const { product_id } = params;
     const category_details =
       (req.nextUrl.searchParams.get(
@@ -69,9 +69,9 @@ export const PUT = async (
   { params }: { params: { product_id: string } },
   res: NextResponse
 ) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const { product_id } = params;
     const reqBody = await req.json();
 
@@ -132,9 +132,9 @@ export const DELETE = async (
   { params }: { params: { product_id: string } },
   res: NextResponse
 ) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const { product_id } = params;
 
     const product = await ProductCollection.findById(product_id).lean();

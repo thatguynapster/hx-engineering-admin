@@ -10,9 +10,9 @@ export const GET = async (
   { params }: { params: { discount_id: string } },
   res: NextResponse
 ) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
+
     const { discount_id } = params;
 
     // NOTE: do this in every route

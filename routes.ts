@@ -12,15 +12,15 @@ export const routes = {
 
 /**
  * An array of routes accessible to the public. These routes do not require auth
- * @type {string[]}
+ * @type {string}
  */
-export const publicRoutes: string[] = ["/api/public"];
+export const publicPrefix: string = "/api/public";
 
 /**
  * An array of routes used for authentication. These routes will redirect logged in users to DEFAULT_LOGIN_REDIRECT
- * @type {string[]}
+ * @type {string}
  */
-export const authRoutes: string[] = ["/"];
+export const authRoutes: string = "/";
 
 /**
  * The prefix for API authentication routes
