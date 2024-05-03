@@ -8,9 +8,8 @@ import { logEntry } from "@/functions/server";
 import { ICategory, IProduct } from "@/types";
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
-  await dbConnect();
-
   try {
+    await dbConnect();
     const limit =
       (req.nextUrl.searchParams.get("limit") as unknown as number) ?? 10;
     const page =
@@ -78,11 +77,11 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       { status: 200 }
     );
   } catch (error: any) {
-    console.log(error);
+    console.log("ERROR: ", error);
     return NextResponse.json(
       {
         error,
-        message: "Error",
+        message: "Error error",
       },
       { status: 500 }
     );
@@ -135,4 +134,8 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       { status: 500 }
     );
   }
+};
+
+export const OPTIONS = async () => {
+  return new NextResponse("", { status: 200 });
 };

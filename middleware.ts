@@ -20,11 +20,18 @@ export async function middleware(req: NextRequest) {
 
   // Allowed origins check
   const origin = req.headers.get("origin") ?? "";
-  if (
-    corsOptions.allowedOrigins.includes("*") ||
+
+  console.log(
+    corsOptions.allowedOrigins.includes("*"),
     corsOptions.allowedOrigins.includes(origin)
-  ) {
+  );
+  console.log("allowed origin ENV: ", process.env?.ALLOWED_ORIGIN);
+
+  if (corsOptions.allowedOrigins.includes(origin)) {
+    console.log("allowed origin");
     response.headers.append("Access-Control-Allow-Origin", origin);
+  } else {
+    console.log("origin not allowed");
   }
 
   // Set default CORS headers
