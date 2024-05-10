@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Types } from "mongoose";
 
+import { createSalesSchema } from "@/validators";
+import { logEntry } from "@/functions/server";
 import {
   addProductPrices,
   calculateTotalPrice,
+  dbConnect,
   findDiscount,
   findMissingProducts,
   findUnavailableProducts,
   reduceProductQuantities,
-} from "../../sales/route";
-import { createSalesSchema } from "@/validators";
-import { logEntry } from "@/functions/server";
-import { dbConnect } from "@/libs/server";
+} from "@/libs/server";
 import { SaleCollection } from "@/models";
 import { randomString } from "@/libs";
 
