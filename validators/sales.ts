@@ -17,6 +17,7 @@ export const createSalesSchema = async (
       .required(),
     user: Joi.object({
       name: Joi.string().required(),
+      email: Joi.string(),
       phone: Joi.string().required(),
     }).required(),
   });

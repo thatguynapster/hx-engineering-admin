@@ -190,7 +190,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
   }
 };
 
-async function findMissingProducts(
+export async function findMissingProducts(
   products: ISales["products"]
 ): Promise<string[]> {
   const productsDetails = await Promise.all(
@@ -200,31 +200,32 @@ async function findMissingProducts(
         is_deleted: false,
         is_dev: process.env.ENVIRONMENT === "development",
       });
-      return productDetails ? null : productId;
+      return productDetails ? null : productId._id;
     })
   );
 
-  return productsDetails.filter(
-    (product) => product?._id
-  ) as unknown as string[];
+  return productsDetails.filter((product) => product) as unknown as string[];
 }
 
-async function findUnavailableProducts(
+export async function findUnavailableProducts(
   products: ISales["products"]
 ): Promise<string[]> {
   const unavailableProducts = await Promise.all(
     products.map(async (product) => {
+      console.log(product);
       const productDetails = await ProductCollection.findOne({
         _id: product._id,
         quantity: { $gte: product.quantity },
       });
+      console.log("product details");
+      console.log(productDetails);
       return productDetails ? null : product._id;
     })
   );
   return unavailableProducts.filter((product) => product) as string[];
 }
 
-async function calculateTotalPrice(
+export async function calculateTotalPrice(
   products: ISales["products"]
 ): Promise<number> {
   let totalPrice = 0;
@@ -241,7 +242,7 @@ async function calculateTotalPrice(
   return totalPrice;
 }
 
-async function findDiscount(discountId: string): Promise<boolean> {
+export async function findDiscount(discountId: string): Promise<boolean> {
   const discountExists = await DiscountCollection.findOne({
     _id: discountId,
     is_deleted: false,
@@ -250,7 +251,7 @@ async function findDiscount(discountId: string): Promise<boolean> {
   return !!discountExists;
 }
 
-async function addProductPrices(products: ISales["products"]) {
+export async function addProductPrices(products: ISales["products"]) {
   const productsWithPrices = [];
 
   for (const product of products) {
@@ -269,7 +270,7 @@ async function addProductPrices(products: ISales["products"]) {
   return productsWithPrices;
 }
 
-async function reduceProductQuantities(products: ISales["products"]) {
+export async function reduceProductQuantities(products: ISales["products"]) {
   await Promise.all(
     products.map(async (product) => {
       await ProductCollection.findOneAndUpdate(
@@ -279,3 +280,8 @@ async function reduceProductQuantities(products: ISales["products"]) {
     })
   );
 }
+
+export const OPTIONS = async () => {
+  console.log("in options");
+  return new NextResponse("", { status: 200 });
+};
