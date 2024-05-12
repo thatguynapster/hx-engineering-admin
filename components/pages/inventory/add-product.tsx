@@ -63,6 +63,7 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
             details: data?.details ?? "",
             name: data?.name ?? "",
             category: data?.category ?? "",
+            featured: data?.featured ?? false,
           }}
           onSubmit={(values: Partial<IProduct>, actions) => {
             onAdd(values, actions, () => setShow(false));
@@ -110,7 +111,7 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
                   <Field.Input name="name" value={values.name} />
                 </Field.Group>
 
-                <Field.Group required name="name" label="Name">
+                <Field.Group required name="category" label="Category">
                   <Field.Select
                     name="category"
                     value={values.category}
@@ -136,6 +137,17 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
                   <Field.Input name="quantity" value={values.quantity} />
                 </Field.Group>
               </div>
+
+              <Field.Group required name="cost_price" label="Item Price">
+                <Field.Toggle
+                  title="Feature product"
+                  enabled={values.featured ?? false}
+                  setEnabled={(value: boolean) => {
+                    console.log(value);
+                    setFieldValue("featured", value);
+                  }}
+                />
+              </Field.Group>
 
               <Field.Group required name="details" label="Product Description">
                 <Field.TextEditor

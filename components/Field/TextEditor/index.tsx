@@ -45,7 +45,10 @@ export const TextEditor = ({ content, onChange }: TextEditorProps) => {
     <div className="flex flex-col w-full">
       <MenuBar {...{ editor }} />
       <div className="p-4">
-        <EditorContent {...{ editor }} />
+        <EditorContent
+          className="border border-dashed rounded-lg h-24 max-h-48"
+          {...{ editor }}
+        />
       </div>
     </div>
   );

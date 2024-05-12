@@ -13,4 +13,5 @@ export interface IProduct extends Document {
   sale_price: number;
   cost_price: number;
   quantity: number;
+  featured: boolean;
 }

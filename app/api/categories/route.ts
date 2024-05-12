@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import mongoose from "mongoose";
 
-import { CategoryCollection, ProductCollection } from "@/models";
+import { CategoryCollection } from "@/models";
 import { dbConnect, validateToken } from "@/libs/server";
 import { createCategorySchema } from "@/validators";
 import { logEntry } from "@/functions/server";

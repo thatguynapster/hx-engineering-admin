@@ -13,6 +13,7 @@ export const createProductSchema = async (
     quantity: Joi.number().required(),
     sale_price: Joi.number().required(),
     cost_price: Joi.number().required(),
+    featured: Joi.boolean().default(false),
   });
 
   return await schema.validateAsync(createProductBody);
@@ -30,6 +31,7 @@ export const updateProductSchema = async (
     quantity: Joi.number(),
     sale_price: Joi.number(),
     cost_price: Joi.number(),
+    featured: Joi.boolean(),
   });
 
   return await schema.validateAsync(updateProductBody);

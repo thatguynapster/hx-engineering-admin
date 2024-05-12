@@ -29,6 +29,7 @@ const productSchema = new Schema<IProduct>(
     cost_price: { type: Number, required: true },
     sale_price: { type: Number, required: true },
     quantity: { type: Number, required: true },
+    featured: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
