@@ -42,20 +42,23 @@ export function Places({
       }
 
       const locationData = (() => {
-        const country = place.address_components.find((i) =>
-          i.types.includes("country")
+        const country = place.address_components.find(
+          (i: { types: string | string[] }) => i.types.includes("country")
         );
 
-        const region = place.address_components.find((i) =>
-          i.types.includes("administrative_area_level_1")
+        const region = place.address_components.find(
+          (i: { types: string | string[] }) =>
+            i.types.includes("administrative_area_level_1")
         );
 
-        let city = place.address_components.find((i) =>
-          i.types.includes("sublocality_level_1")
+        let city = place.address_components.find(
+          (i: { types: string | string[] }) =>
+            i.types.includes("sublocality_level_1")
         );
         if (!city) {
-          city = place.address_components.find((i) =>
-            i.types.includes("administrative_area_level_2")
+          city = place.address_components.find(
+            (i: { types: string | string[] }) =>
+              i.types.includes("administrative_area_level_2")
           );
         }
 
@@ -81,7 +84,7 @@ export function Places({
     <Autocomplete
       className="w-full h-full"
       restrictions={{ country }}
-      onLoad={(autocomplete) => {
+      onLoad={(autocomplete: any) => {
         autocompleteRef.current = autocomplete;
       }}
       onPlaceChanged={handlePlaceChanged}
