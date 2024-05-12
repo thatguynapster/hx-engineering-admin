@@ -25,6 +25,7 @@ export async function middleware(req: NextRequest) {
       console.log("allowed origin");
       response.headers.append("Access-Control-Allow-Origin", origin);
     } else {
+      console.log(origin);
       console.log("origin not allowed");
     }
     // Set default CORS headers
