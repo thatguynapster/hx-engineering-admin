@@ -1,6 +1,9 @@
 "use client";
 
-import { PlusIcon } from "@heroicons/react/24/outline";
+import {
+  AdjustmentsHorizontalIcon,
+  PlusIcon,
+} from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FormikHelpers } from "formik";
 import queryString from "query-string";
@@ -10,10 +13,13 @@ import AddProduct from "@/components/pages/inventory/add-product";
 import TableBody from "@/components/pages/inventory/table-body";
 import { TablePagination } from "@/components/Table";
 import { createProductService } from "@/services";
-import { IApiResponse, IProduct } from "@/types";
+import { IApiResponse, ICategory, IProduct } from "@/types";
 import { Button, Table } from "@/components";
 import { FiltersProps } from "@/types/ui";
 import { classNames } from "@/libs";
+import AddCategory from "@/components/pages/inventory/add-category";
+import { createCategoryService } from "@/services/category";
+import { useCategory } from "@/hooks";
 
 const Products = () => {
   const [filters, setFilters] = useState<Partial<FiltersProps>>({ page: 1 });
@@ -21,6 +27,8 @@ const Products = () => {
   const { data, isLoading, error, mutate } = useSWR<IApiResponse>(
     `/products?${queryString.stringify({ category_details: true, ...filters })}`
   );
+
+  const { mutate: mutateCategories } = useCategory();
 
   const uploadProduct = async (
     values: Partial<IProduct>,
@@ -38,20 +46,36 @@ const Products = () => {
       });
   };
 
+  const addCategory = async (
+    values: Partial<ICategory>,
+    actions: FormikHelpers<Partial<ICategory>>,
+    hide: () => void
+  ) => {
+    await createCategoryService(values)
+      .then(() => {
+        mutateCategories();
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        actions.setSubmitting(false);
+        hide();
+      });
+  };
+
   return (
     <div
       className={classNames(
+        "bg-white dark:bg-neutral-gray",
+        "rounded-lg shadow-sm",
         "flex flex-col",
         "gap-6 p-4",
-        "rounded-lg shadow-sm",
-        "w-full",
-        "bg-white dark:bg-neutral-gray"
+        "w-full"
       )}
     >
       <div
         className={classNames(
           "justify-between items-center",
-          "flex flex-wrap",
+          "flex flex-wrap gap-4",
           "w-full"
         )}
       >
@@ -63,25 +87,31 @@ const Products = () => {
             "gap-3"
           )}
         >
+          <AddCategory onAdd={addCategory}>
+            {({ proceed }) => (
+              <Button
+                onClick={proceed}
+                className={classNames(
+                  "border border-neutral-30 dark:border-neutral-10",
+                  "text-neutral-50 dark:text-neutral-10",
+                  "bg-white dark:bg-transparent"
+                )}
+              >
+                <PlusIcon className="w-5 h-5" />
+                <span>Add Category</span>
+              </Button>
+            )}
+          </AddCategory>
+
           <AddProduct onAdd={uploadProduct}>
             {({ proceed }) => (
-              <Button className="bg-info text-white" onClick={proceed}>
+              <Button onClick={proceed} className="bg-info text-white">
                 <PlusIcon className="w-5 h-5/>" />
-                <span className="hidden lg:block">Add Product</span>
+                <span>Add Product</span>
               </Button>
             )}
           </AddProduct>
-          {/* <Button
-            className={classNames(
-              "bg-white dark:bg-transparent",
-              "text-neutral-50 dark:text-neutral-10",
-              "border border-neutral-30 dark:border-neutral-10"
-            )}
-            onClick={() => {}}
-          >
-            <AdjustmentsHorizontalIcon className="w-5 h-5" />
-            <span className="hidden lg:block">Filters</span>
-          </Button> */}
+
           {/* <Button
             className={classNames(
               "bg-white dark:bg-transparent",

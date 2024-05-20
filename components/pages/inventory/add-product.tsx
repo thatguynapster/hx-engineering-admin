@@ -1,5 +1,5 @@
 import { Button, Field, Modal } from "@/components";
-import { useProduct, useStore } from "@/hooks";
+import { useCategory, useProduct, useStore } from "@/hooks";
 import { classNames, schema } from "@/libs";
 import { uploadProductImageService } from "@/services";
 import { IApiResponse, ICategory, IProduct } from "@/types";
@@ -24,9 +24,11 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
 
   const { data } = useProduct(productID, { category_details: true });
 
-  const { data: categoriesDAta } = useSWR<IApiResponse>("/categories");
+  // const { data: categoriesData } = useSWR<IApiResponse>("/categories");
+  const { data: categoriesData } = useCategory();
+
   const categories = (() => {
-    return categoriesDAta?.docs.map((category: any) => ({
+    return categoriesData?.docs.map((category: any) => ({
       value: category._id,
       label: category.name,
     }));

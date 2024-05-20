@@ -91,19 +91,19 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       );
     }
 
-    const product = await new CategoryCollection({
+    const category = await new CategoryCollection({
       ...categoryBody,
       // _id: new mongoose.Types.ObjectId(),
       is_dev: process.env.ENVIRONMENT === "development",
     }).save();
 
-    await logEntry("product", categoryBody, "CREATE");
+    await logEntry("category", categoryBody, "CREATE");
 
     return NextResponse.json(
       {
         success: true,
-        message: "Product created",
-        response: product.toObject(),
+        message: "Category created",
+        response: category.toObject(),
       },
       { status: 200 }
     );
