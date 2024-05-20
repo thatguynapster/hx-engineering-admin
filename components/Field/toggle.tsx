@@ -11,7 +11,7 @@ export function Toggle({
   title: string;
 }) {
   return (
-    <Switch.Group as="div" className="flex items-center">
+    <Switch.Group as="div" className="flex items-center py-2.5 px-3.5">
       <Switch
         checked={enabled}
         onChange={setEnabled}

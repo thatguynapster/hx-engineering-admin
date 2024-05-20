@@ -138,7 +138,12 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
                 </Field.Group>
               </div>
 
-              <Field.Group required name="cost_price" label="Item Price">
+              <Field.Group
+                className="w-max"
+                required
+                name="cost_price"
+                label="Item Price"
+              >
                 <Field.Toggle
                   title="Feature product"
                   enabled={values.featured ?? false}

@@ -5,6 +5,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -26,6 +27,42 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addBase, theme }: { addBase: any; theme: any }) {
+      function hexToRgb(hex: string) {
+        const value = hex.charAt(0) === "#" ? hex.substring(1, 7) : hex;
+
+        return [
+          parseInt(value.substring(0, 2), 16),
+          parseInt(value.substring(2, 4), 16),
+          parseInt(value.substring(4, 6), 16),
+        ].join(",");
+      }
+
+      function extractColorVars(colorObj: string, colorGroup = "") {
+        return Object.keys(colorObj).reduce((vars, colorKey: any) => {
+          const value = colorObj[colorKey];
+          const cssVariable =
+            colorKey === "DEFAULT"
+              ? `--color${colorGroup}`
+              : `--color${colorGroup}-${colorKey}`;
+
+          const newVars: any =
+            typeof value === "string"
+              ? {
+                  [cssVariable]: value,
+                  [`${cssVariable}-rgb`]: hexToRgb(value),
+                }
+              : extractColorVars(value, `-${colorKey}`);
+
+          return { ...vars, ...newVars };
+        }, {});
+      }
+
+      addBase({
+        ":root": extractColorVars(theme("colors")),
+      });
+    },
+  ],
 };
 export default config;

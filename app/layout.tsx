@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 
-import "./globals.css";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
+
+import "../styles/index.scss";
 
 import StoreProvider from "@/providers";
+import { classNames } from "@/libs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,6 +17,8 @@ export const metadata: Metadata = {
   description: "HX Engineering",
 };
 
+dayjs.extend(relativeTime);
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={classNames(inter.className, "dark")}>
         <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
         <StoreProvider>{children}</StoreProvider>
       </body>

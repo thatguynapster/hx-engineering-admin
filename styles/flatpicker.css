@@ -1,0 +1,46 @@
+.flatpickr-calendar {
+  @apply w-full flex flex-col gap-y-4 shadow-none dark:bg-neutral-dark #{!important};
+}
+
+.flatpickr-rContainer {
+  @apply w-full #{!important};
+}
+
+.flatpickr-month {
+  @apply flex-grow text-neutral-gray dark:text-neutral-10 #{!important};
+}
+
+.flatpickr-prev-month > svg,
+.flatpickr-next-month > svg {
+  @apply h-4 w-4 fill-neutral-40 hover:fill-primary #{!important};
+}
+
+.flatpickr-weekday {
+  @apply text-neutral-gray dark:text-neutral-10 #{!important};
+}
+
+.flatpickr-day {
+  @apply dark:text-neutral-10 #{!important};
+}
+
+.dayContainer > .prevMonthDay,
+.dayContainer > .nextMonthDay {
+  @apply dark:text-neutral-40 #{!important};
+}
+
+.dayContainer > .inRange {
+  @apply w-full #{!important};
+}
+
+.flatpickr-day:focus:hover,
+.inRange:not(.selected) {
+  @apply bg-primary/10 dark:bg-primary/30 dark:text-white #{!important};
+}
+
+.startRange:after {
+  @apply bg-primary/10 dark:bg-primary/30 #{!important};
+}
+
+.endRange:before {
+  @apply bg-primary/10 dark:bg-primary/30 #{!important};
+}

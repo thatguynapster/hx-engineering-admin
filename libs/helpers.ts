@@ -43,3 +43,18 @@ export const randomString = (length: number, chars: string): string => {
   ).join("");
   return result;
 };
+
+export const handlePeriod = (selectedPeriod: string) => {
+  switch (selectedPeriod) {
+    case "This month":
+    case "Last month":
+      return "weekly";
+
+    case "This year":
+    case "Last year":
+      return "monthly";
+
+    default:
+      return "daily";
+  }
+};

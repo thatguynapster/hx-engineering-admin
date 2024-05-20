@@ -1,4 +1,5 @@
 export * from "./Checkbox";
+export { default as Date } from "./Date/Date";
 export * from "./Error";
 export * from "./group";
 export * from "./input";

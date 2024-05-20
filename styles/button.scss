@@ -1,0 +1,41 @@
+.btn {
+  @apply flex justify-between items-center disabled:bg-[#F9FAFB] disabled:border-[#F9FAFB] disabled:text-neutral-400 #{!important};
+
+  // sizes
+  &-xs {
+    @apply h-8 text-xs px-1.5 py-0.5 #{!important};
+  }
+
+  &-sm {
+    @apply h-10 text-sm px-2.5 py-1.5 #{!important};
+  }
+
+  &-lg {
+    @apply h-14 text-lg px-6 py-3 #{!important};
+  }
+
+  // variants
+  &-primary {
+    @apply bg-primary text-white #{!important};
+  }
+
+  &-outline {
+    @apply border border-neutral-20 dark:border-white text-neutral-50 dark:text-neutral-30 #{!important};
+  }
+
+  &-danger {
+    @apply bg-red-600 text-white border-red-600 #{!important};
+  }
+
+  &-outline-danger {
+    @apply border border-red-600 text-red-600 #{!important};
+  }
+
+  &-outline-primary {
+    @apply border border-primary text-primary hover:bg-primary hover:text-white hover:border-white #{!important};
+  }
+
+  &-white {
+    @apply bg-white text-black border-white #{!important};
+  }
+}

@@ -4,7 +4,7 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  --background-start-rgb: 255, 255, 255;
   --background-end-rgb: 255, 255, 255;
 }
 
@@ -31,3 +31,18 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  @import "button";
+}
+
+.glass {
+  @apply bg-white/50 dark:bg-neutral-dark/50;
+  /* From https://css.glass */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@import "flatpickr/dist/themes/airbnb.css";
+@import "./scrollbar.css";
+@import "./flatpicker.css";

@@ -1,20 +1,23 @@
 "use client";
 
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
+import { CalendarIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import queryString from "query-string";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 
 import { IApiResponse } from "@/types";
-import { Button, Table, TablePagination } from "@/components";
+import { Button, Field, Table, TablePagination } from "@/components";
 import { FiltersProps } from "@/types/ui";
 import { classNames } from "@/libs";
-import { useStore } from "@/hooks";
 import TableBody from "@/components/pages/orders/table-body";
+import dayjs from "dayjs";
 
 const Orders = () => {
-  const [filters, setFilters] = useState<Partial<FiltersProps>>({ page: 1 });
+  const [filters, setFilters] = useState<Partial<FiltersProps>>({
+    from_date: dayjs().valueOf(),
+    to_date: dayjs().valueOf(),
+    page: 1,
+  });
 
   const { data, isLoading, error, mutate } = useSWR<IApiResponse>(
     `/sales?${queryString.stringify({ product_details: true, ...filters })}`
@@ -46,9 +49,41 @@ const Orders = () => {
           )}
         >
           <h1 className="text-xl font-medium">Summary</h1>
+
+          <Field.Date.Range
+            values={[filters.from_date as number, filters.to_date as number]}
+            onChange={(dates, period) => {
+              setFilters((filters) => ({
+                ...filters,
+                from_date: dates[0],
+                to_date: dates[1],
+              }));
+            }}
+          >
+            <Button className="btn-outline">
+              <CalendarIcon className="w-5 h-5" />
+              <span>
+                {dayjs(filters?.from_date).format(
+                  `MMM DD ${
+                    dayjs(filters.from_date).year() !== dayjs().year()
+                      ? "YYYY"
+                      : ""
+                  }`
+                )}{" "}
+                -{" "}
+                {dayjs(filters?.to_date).format(
+                  `MMM DD ${
+                    dayjs(filters.from_date).year() !== dayjs().year()
+                      ? "YYYY"
+                      : ""
+                  }`
+                )}
+              </span>
+            </Button>
+          </Field.Date.Range>
         </div>
 
-        <div className="grid grid-cols-3 md:grid-cols-4 divide-x">
+        <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x">
           {summaryLoading && <></>}
           {summaryData &&
             Object.keys(summaryData).map((key, i) => (
@@ -56,10 +91,11 @@ const Orders = () => {
                 key={i}
                 className={classNames(
                   i === Object.keys(summaryData).length - 1
-                    ? "pl-4 md:pl-8"
+                    ? "sm:pl-4 md:pl-8"
                     : i == 0
-                    ? "pr-4 md:pr-8"
-                    : "px-4 md:px-8"
+                    ? "sm:pr-4 md:pr-8"
+                    : "sm:px-4 md:px-8",
+                  "py-4"
                 )}
               >
                 <div className={classNames("flex flex-col gap-3")}>
@@ -77,9 +113,9 @@ const Orders = () => {
                   <div className="flex flex-col md:flex-row gap-3 justify-between">
                     <div className="flex flex-col md:gap-3">
                       <p className="font-semibold">{summaryData[key].count}</p>
-                      <p className="font-semibold text-xs text-neutral-30">
-                        Last 7 days
-                      </p>
+                      {/* <p className="font-semibold text-xs text-neutral-30">
+                        {filters.period}
+                      </p> */}
                     </div>
 
                     <div className="flex flex-col md:gap-3 md:items-end">
@@ -89,9 +125,9 @@ const Orders = () => {
                           summaryData[key].amount.toFixed(2) as number
                         ).toLocaleString()}
                       </p>
-                      <p className="font-semibold text-xs text-neutral-30 md:text-left">
+                      {/* <p className="font-semibold text-xs text-neutral-30 md:text-left">
                         Revenue
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                   {/* 

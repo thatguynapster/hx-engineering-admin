@@ -59,7 +59,7 @@ export function Group({
           "transition ease-in-out duration-150",
           "border border-dark",
           "focus-within:border-primary",
-          "min-h-12",
+          // "min-h-12",
           disabled
             ? "bg-neutral-50 pointer-events-none"
             : "bg-white dark:bg-neutral-gray dark:border-0",
