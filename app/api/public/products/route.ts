@@ -16,12 +16,24 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       (req.nextUrl.searchParams.get(
         "category_details"
       ) as unknown as boolean) ?? false;
+    const categories = req.nextUrl.searchParams.get("categories") as string;
+
+    let query: any = {
+      is_deleted: false,
+      is_dev: process.env.ENVIRONMENT === "development",
+    };
+
+    if (categories) {
+      query = { ...query, category: { $in: categories?.split(",") } };
+    }
 
     // @ts-ignore this is valid
-    const products = await ProductCollection.paginate(
-      { is_deleted: false, is_dev: process.env.ENVIRONMENT === "development" },
-      { lean: true, limit, page, sort: { _id: -1 } }
-    );
+    const products = await ProductCollection.paginate(query, {
+      lean: true,
+      limit,
+      page,
+      sort: { _id: -1 },
+    });
 
     // get category details for each product
     if (category_details) {

@@ -38,6 +38,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       );
     }
     //END check if token is valid
+
     let query: any = {
       is_deleted: false,
       is_dev: process.env.ENVIRONMENT === "development",
