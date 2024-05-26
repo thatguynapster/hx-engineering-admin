@@ -58,7 +58,7 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
             category: schema.requireString("Category"),
           })}
           initialValues={{
-            images: data?.images as string[],
+            images: (data?.images as string[]) ?? [],
             cost_price: data?.cost_price ?? 0,
             sale_price: data?.sale_price ?? 0,
             quantity: data?.quantity ?? 0,

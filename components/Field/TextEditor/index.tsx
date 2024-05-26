@@ -1,18 +1,16 @@
 "use client";
 
-import "./styles.scss";
-
-import { Color } from "@tiptap/extension-color";
-import ListItem from "@tiptap/extension-list-item";
-import TextStyle from "@tiptap/extension-text-style";
 import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Highlight from "@tiptap/extension-highlight";
+import TextStyle from "@tiptap/extension-text-style";
 import TextAlign from "@tiptap/extension-text-align";
+import Highlight from "@tiptap/extension-highlight";
+import ListItem from "@tiptap/extension-list-item";
+import { Color } from "@tiptap/extension-color";
+import StarterKit from "@tiptap/starter-kit";
 import React, { useEffect } from "react";
+
 import { MenuBar } from "./menu";
-import { debounce } from "lodash";
-import Heading from "@tiptap/extension-heading";
+import "./styles.scss";
 
 interface TextEditorProps {
   content?: string;
@@ -46,7 +44,7 @@ export const TextEditor = ({ content, onChange }: TextEditorProps) => {
       <MenuBar {...{ editor }} />
       <div className="p-4">
         <EditorContent
-          className="border border-dashed rounded-lg h-24 max-h-48"
+          className="border border-dashed rounded-lg min-h-24"
           {...{ editor }}
         />
       </div>
