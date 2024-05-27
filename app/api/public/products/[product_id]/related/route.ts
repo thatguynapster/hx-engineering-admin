@@ -40,6 +40,7 @@ export const GET = async (
       is_deleted: false,
       is_dev: process.env.ENVIRONMENT === "development",
       category: { $in: [product.category] },
+      _id: { $ne: product_id },
     };
 
     // @ts-ignore this is valid
