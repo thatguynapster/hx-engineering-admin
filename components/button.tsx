@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, forwardRef } from "react";
-import { Spinner } from "./icons";
 import { classNames } from "@/libs";
+import { Spinner } from "./icons";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isSubmitting?: boolean;

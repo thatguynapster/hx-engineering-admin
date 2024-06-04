@@ -73,15 +73,8 @@ function TD({
   ...props
 }: TableHTMLAttributes<HTMLTableCellElement> & { rowSpan?: number }) {
   return (
-    <td
-      className={classNames(
-        "whitespace-nowrap px-3 py-3.5 text-sm sm:table-cell text-center"
-      )}
-      {...props}
-    >
-      <div className={classNames("flex relative w-full", className)}>
-        {children}
-      </div>
+    <td className={classNames("px-3 py-3.5 text-sm sm:table-cell")} {...props}>
+      <div className={classNames("flex w-full", className)}>{children}</div>
     </td>
   );
 }

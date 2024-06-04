@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 
 const Orders = () => {
   const [filters, setFilters] = useState<Partial<FiltersProps>>({
-    from_date: dayjs().valueOf(),
+    from_date: dayjs().subtract(30, "days").valueOf(),
     to_date: dayjs().valueOf(),
     page: 1,
   });
@@ -83,7 +83,7 @@ const Orders = () => {
           </Field.Date.Range>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x">
+        <div className="grid grid-cols-1 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x">
           {summaryLoading && <></>}
           {summaryData &&
             Object.keys(summaryData).map((key, i) => (
@@ -101,7 +101,7 @@ const Orders = () => {
                 <div className={classNames("flex flex-col gap-3")}>
                   <h1
                     className={classNames(
-                      "font-semibold capitalize truncate",
+                      "font-semibold capitalize truncate text-sm",
                       key.split("_")[0] === "total" && "text-info",
                       key.split("_")[0] === "completed" && "text-success",
                       key.split("_")[0] === "pending" && "text-neutral-40"
@@ -190,13 +190,14 @@ const Orders = () => {
             <tr>
               <Table.TH>Order ID</Table.TH>
               <Table.TH className="">Customer</Table.TH>
-              <Table.TH className="">Products</Table.TH>
+              <Table.TH className="max-w-md">Products</Table.TH>
               <Table.TH className="flex justify-center">order value</Table.TH>
               <Table.TH className="flex justify-center">quantity</Table.TH>
               {/* <Table.TH className="flex justify-center">
               expected delivery
             </Table.TH> */}
-              <Table.TH className="">status</Table.TH>
+              <Table.TH className="flex justify-center">order date</Table.TH>
+              <Table.TH className="flex justify-center">status</Table.TH>
               <Table.TH className=""></Table.TH>
             </tr>
           </thead>

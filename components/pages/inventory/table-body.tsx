@@ -17,7 +17,7 @@ const TableBody = ({ data }: { data: IProduct }) => {
       onClick={() => {
         router.push(
           routes.inventory.details
-            .replace(":product_id", data._id)
+            .replace(":product_id", data._id as string)
             .replace(":tab", "overview")
         );
       }}

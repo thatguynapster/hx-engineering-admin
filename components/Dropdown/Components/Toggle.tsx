@@ -1,5 +1,5 @@
-import { ButtonHTMLAttributes } from 'react';
-import { Dropdown } from '@restart/ui';
+import { ButtonHTMLAttributes } from "react";
+import { Dropdown } from "@restart/ui";
 
 export interface ToggleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   as?: any;
@@ -7,10 +7,9 @@ export interface ToggleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Toggle = ({
   children,
-  as: Component = 'button',
+  as: Component = "button",
   ...rest
 }: ToggleProps) => {
-  
   return (
     <Dropdown.Toggle>
       {(props) => {

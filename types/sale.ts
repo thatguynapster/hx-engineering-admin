@@ -21,4 +21,5 @@ export type ISales = {
     email?: string;
   };
   status: "PENDING" | "READY_FOR_DELIVERY" | "COMPLETED";
+  createdAt: Date;
 };
