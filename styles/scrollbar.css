@@ -1,0 +1,22 @@
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-primary/20
+  /* background: #e0e0e0; */;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-primary
+  /* background: #fbc02d; */;
+}
+
+.scrollbar-gray::-webkit-scrollbar-thumb {
+  @apply bg-primary/20
+  /* background: #e0e0e0; */;
+}
