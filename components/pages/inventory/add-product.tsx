@@ -150,7 +150,6 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
                   title="Feature product"
                   enabled={values.featured ?? false}
                   setEnabled={(value: boolean) => {
-                    console.log(value);
                     setFieldValue("featured", value);
                   }}
                 />

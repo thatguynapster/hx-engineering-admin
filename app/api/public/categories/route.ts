@@ -39,7 +39,6 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
             const products = (await ProductCollection.find({
               category: category._id,
             }).lean()) as IProduct[];
-            console.log(products);
 
             category.product_count = products.length;
             return category;

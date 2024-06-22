@@ -66,6 +66,7 @@ const TableBody = ({ data, mutate }: { data: ISales; mutate: () => void }) => {
         <div className="flex flex-col gap-0.5">
           <span className="whitespace-nowrap">{data.user?.name}</span>
           <span className="whitespace-nowrap">{data.user?.phone}</span>
+          <span className="whitespace-nowrap">{data.user?.email}</span>
         </div>
       </Table.TD>
 
