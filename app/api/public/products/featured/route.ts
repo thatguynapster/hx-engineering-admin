@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { CategoryCollection, ProductCollection } from "@/models";
-import { dbConnect, validateToken } from "@/libs/server";
+import { dbConnect } from "@/libs/server";
 import { ICategory, IProduct } from "@/types";
 
 export const GET = async (req: NextRequest, res: NextResponse) => {

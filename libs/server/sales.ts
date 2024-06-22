@@ -23,13 +23,10 @@ export async function findUnavailableProducts(
 ): Promise<string[]> {
   const unavailableProducts = await Promise.all(
     products.map(async (product) => {
-      console.log(product);
       const productDetails = await ProductCollection.findOne({
         _id: product._id,
         quantity: { $gte: product.quantity },
       });
-      console.log("product details");
-      console.log(productDetails);
       return productDetails ? null : product._id;
     })
   );
