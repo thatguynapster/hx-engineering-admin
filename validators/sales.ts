@@ -20,6 +20,15 @@ export const createSalesSchema = async (
       email: Joi.string(),
       phone: Joi.string().required(),
     }).required(),
+    location: Joi.object({
+      address: Joi.string().required(),
+      city: Joi.string(),
+      country: Joi.string(),
+      country_code: Joi.string(),
+      latitude: Joi.number().required(),
+      longitude: Joi.number().required(),
+      region: Joi.string(),
+    }),
   });
 
   return await schema.validateAsync(createSalesBody);

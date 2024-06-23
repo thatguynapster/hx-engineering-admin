@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 import { IDiscount, IProduct } from ".";
+import { ILocation } from "@/components/Map";
 
 export type ISales = {
   _id: Types.ObjectId;
@@ -20,6 +21,7 @@ export type ISales = {
     phone: string;
     email?: string;
   };
+  location: ILocation;
   status: "PENDING" | "READY_FOR_DELIVERY" | "COMPLETED";
   createdAt: Date;
 };

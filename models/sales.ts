@@ -36,6 +36,15 @@ const saleSchema = new Schema<ISales>(
       email: { type: String, default: null },
       phone: { type: String, required: true },
     },
+    location: {
+      address: { type: String },
+      city: { type: String },
+      country: { type: String },
+      country_code: { type: String },
+      latitude: { type: Number },
+      longitude: { type: Number },
+      region: { type: String },
+    },
     status: { type: String, default: "PENDING" },
   },
   { timestamps: true }

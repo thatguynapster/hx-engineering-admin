@@ -67,6 +67,9 @@ const TableBody = ({ data, mutate }: { data: ISales; mutate: () => void }) => {
           <span className="whitespace-nowrap">{data.user?.name}</span>
           <span className="whitespace-nowrap">{data.user?.phone}</span>
           <span className="whitespace-nowrap">{data.user?.email}</span>
+          {data.location && (
+            <span className="whitespace-nowrap">{data.location?.address}</span>
+          )}
         </div>
       </Table.TD>
 
