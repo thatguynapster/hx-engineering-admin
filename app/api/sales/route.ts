@@ -8,6 +8,7 @@ import {
   findMissingProducts,
   findUnavailableProducts,
   reduceProductQuantities,
+  sendOrderConfirmationEmail,
 } from "@/libs/server";
 import { logEntry } from "@/functions/server";
 import { createSalesSchema } from "@/validators";
@@ -78,6 +79,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       is_dev: process.env.ENVIRONMENT === "development",
       price: totalPrice,
     });
+
+    // send sale confirmation emails
+    await sendOrderConfirmationEmail(sale);
 
     const savedSale = await sale.save();
     await logEntry("sale", saleBody, "CREATE");
