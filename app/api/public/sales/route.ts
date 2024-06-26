@@ -11,6 +11,7 @@ import {
   findMissingProducts,
   findUnavailableProducts,
   reduceProductQuantities,
+  sendOrderConfirmationEmail,
 } from "@/libs/server";
 import { SaleCollection } from "@/models";
 import { randomString } from "@/libs";
@@ -78,6 +79,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     const savedSale = await sale.save();
     await logEntry("sale", saleBody, "CREATE");
+
+    // send sale confirmation emails
+    await sendOrderConfirmationEmail({ order: savedSale });
 
     // Reduce product quantities
     await reduceProductQuantities(saleBody.products);
