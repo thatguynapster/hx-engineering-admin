@@ -48,7 +48,6 @@ const StyledMenu = styled(motion.div)`
   z-index: 10;
   display: flex;
   overflow: auto;
-  min-width: 240px;
   border-radius: 0.5rem;
   background-color: #fff;
   flex-direction: column;

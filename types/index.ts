@@ -1,5 +1,6 @@
 export * from "./api";
 export * from "./auth";
+export * from "./announcement";
 export * from "./category";
 export * from "./discount";
 export * from "./log";
