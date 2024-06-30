@@ -7,6 +7,7 @@ import Highlight from "@tiptap/extension-highlight";
 import ListItem from "@tiptap/extension-list-item";
 import { Color } from "@tiptap/extension-color";
 import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
 import React, { useEffect } from "react";
 
 import { MenuBar } from "./menu";
@@ -20,6 +21,7 @@ interface TextEditorProps {
 export const TextEditor = ({ content, onChange }: TextEditorProps) => {
   const editor = useEditor({
     extensions: [
+      Image.configure({ inline: true, allowBase64: true }),
       TextAlign.configure({
         types: ["paragraph"],
       }),
@@ -40,14 +42,13 @@ export const TextEditor = ({ content, onChange }: TextEditorProps) => {
   }, [editor]);
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full gap-4 p-4">
       <MenuBar {...{ editor }} />
-      <div className="p-4">
-        <EditorContent
-          className="border border-dashed rounded-lg min-h-24"
-          {...{ editor }}
-        />
-      </div>
+
+      <EditorContent
+        className="border border-dashed rounded-lg min-h-24"
+        {...{ editor }}
+      />
     </div>
   );
 };

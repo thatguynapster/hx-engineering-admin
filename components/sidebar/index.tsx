@@ -9,12 +9,6 @@ import { Icons } from "..";
 import { routes } from "@/routes";
 
 const navigation = [
-  // {
-  //   name: "Dashboard",
-  //   href: "/dashboard/overview",
-  //   icon: HomeIcon,
-  //   current: true,
-  // },
   {
     name: "Inventory",
     href: routes.inventory.index,
@@ -27,7 +21,12 @@ const navigation = [
     icon: Icons.Orders,
     current: false,
   },
-  // { name: "Team", href: "/dashboard/team", icon: UsersIcon, current: false },
+  {
+    name: "Announcements",
+    href: routes.announcements.index,
+    icon: Icons.Bullhorn,
+    current: false,
+  },
 ];
 
 export const Sidebar = ({

@@ -15,6 +15,8 @@ import {
   StrikeThroughIcon,
   UndoIcon,
 } from "./icons";
+import { PhotoIcon } from "@heroicons/react/24/outline";
+import MenuImageButton from "./menu-image-button";
 
 export const MenuBar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {
@@ -22,7 +24,7 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
   }
 
   return (
-    <div className="flex justify-between gap-12 p-4">
+    <div className="flex justify-between gap-12">
       <div className="flex gap-12">
         <div className="flex gap-6">
           <Button
@@ -120,6 +122,15 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
           >
             <NumberListIcon size={24} />
           </Button>
+        </div>
+
+        <div className="flex gap-6">
+          <MenuImageButton
+            {...{ editor }}
+            onImageSelect={(image: string) => {
+              console.log(image);
+            }}
+          />
         </div>
       </div>
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { ReactNode, TableHTMLAttributes } from "react";
 import Tippy from "@tippyjs/react";

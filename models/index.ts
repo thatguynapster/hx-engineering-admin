@@ -1,3 +1,4 @@
+export { Announcement as AnnouncementCollection } from "./announcements";
 export { Category as CategoryCollection } from "./categories";
 export { Discount as DiscountCollection } from "./discounts";
 export { Log as LogCollection } from "./logger";
