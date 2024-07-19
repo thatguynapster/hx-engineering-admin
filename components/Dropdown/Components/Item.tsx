@@ -12,7 +12,8 @@ export const Item = forwardRef<HTMLElement, DropdownItemProps>(
           "text-left",
           "px-4 py-3",
           "flex items-center",
-          "hover:bg-neutral-100 transition",
+          "hover:bg-neutral-100 dark:hover:bg-neutral-dark transition",
+          "dark:bg-neutral-gray",
           active && "bg-neutral-100",
           className
         )}

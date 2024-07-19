@@ -75,7 +75,7 @@ const TableBody = ({
                   className={classNames(
                     "py-2.5 px-4",
                     "gap-4",
-                    "hover:bg-error/10 text-error"
+                    "hover:!bg-error/10 !text-error"
                   )}
                 >
                   <TrashIcon className="w-5 h-5" />
