@@ -85,7 +85,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       return NextResponse.json(
         {
           success: false,
-          message: "Product with the same name already exists",
+          message: "Category with the same name already exists",
         },
         { status: 400 }
       );

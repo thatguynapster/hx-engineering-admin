@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  AdjustmentsHorizontalIcon,
-  PlusIcon,
-} from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { FormikHelpers } from "formik";
 import queryString from "query-string";
@@ -17,9 +14,6 @@ import { IApiResponse, ICategory, IProduct } from "@/types";
 import { Button, Table } from "@/components";
 import { FiltersProps } from "@/types/ui";
 import { classNames } from "@/libs";
-import AddCategory from "@/components/pages/inventory/add-category";
-import { createCategoryService } from "@/services/category";
-import { useCategory } from "@/hooks";
 
 const Products = () => {
   const [filters, setFilters] = useState<Partial<FiltersProps>>({ page: 1 });
@@ -27,8 +21,6 @@ const Products = () => {
   const { data, isLoading, error, mutate } = useSWR<IApiResponse>(
     `/products?${queryString.stringify({ category_details: true, ...filters })}`
   );
-
-  const { mutate: mutateCategories } = useCategory();
 
   const uploadProduct = async (
     values: Partial<IProduct>,
@@ -38,22 +30,6 @@ const Products = () => {
     await createProductService(values)
       .then(() => {
         mutate();
-      })
-      .catch((error) => console.log(error))
-      .finally(() => {
-        actions.setSubmitting(false);
-        hide();
-      });
-  };
-
-  const addCategory = async (
-    values: Partial<ICategory>,
-    actions: FormikHelpers<Partial<ICategory>>,
-    hide: () => void
-  ) => {
-    await createCategoryService(values)
-      .then(() => {
-        mutateCategories();
       })
       .catch((error) => console.log(error))
       .finally(() => {
@@ -87,22 +63,6 @@ const Products = () => {
             "gap-3"
           )}
         >
-          <AddCategory onAdd={addCategory}>
-            {({ proceed }) => (
-              <Button
-                onClick={proceed}
-                className={classNames(
-                  "border border-neutral-30 dark:border-neutral-10",
-                  "text-neutral-50 dark:text-neutral-10",
-                  "bg-white dark:bg-transparent"
-                )}
-              >
-                <PlusIcon className="w-5 h-5" />
-                <span>Add Category</span>
-              </Button>
-            )}
-          </AddCategory>
-
           <AddProduct onAdd={uploadProduct}>
             {({ proceed }) => (
               <Button onClick={proceed} className="bg-info text-white">
@@ -111,18 +71,6 @@ const Products = () => {
               </Button>
             )}
           </AddProduct>
-
-          {/* <Button
-            className={classNames(
-              "bg-white dark:bg-transparent",
-              "text-neutral-50 dark:text-neutral-10",
-              "border border-neutral-30 dark:border-neutral-10"
-            )}
-            onClick={() => {}}
-          >
-            <ArrowDownTrayIcon className="w-5 h-5" />
-            <span className="hidden lg:block">Download all</span>
-          </Button> */}
         </div>
       </div>
 

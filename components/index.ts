@@ -1,7 +1,8 @@
 export * from "./Badge";
 export * from "./button";
+export { default as Confirm } from "./confirm-modal";
 export { default as Dropdown } from "./Dropdown";
-export * from "./error";
+export * from "./form-error";
 export * from "./formError";
 export * from "./formSuccess";
 export * as Field from "./Field";

@@ -1,12 +1,12 @@
-import { Button, Field, Modal } from "@/components";
-import { useCategory, useProduct, useStore } from "@/hooks";
-import { classNames, schema } from "@/libs";
-import { uploadProductImageService } from "@/services";
-import { IApiResponse, ICategory, IProduct } from "@/types";
+import React, { ReactNode, useState } from "react";
 import { Formik, FormikHelpers } from "formik";
-import React, { ReactNode, useMemo, useState } from "react";
-import useSWR from "swr";
 import { object } from "yup";
+
+import { useCategories, useProduct, useStore } from "@/hooks";
+import { uploadProductImageService } from "@/services";
+import { Button, Field, Modal } from "@/components";
+import { classNames, schema } from "@/libs";
+import { IProduct } from "@/types";
 
 interface AddProductProps {
   children: (props: { proceed: () => void }) => ReactNode;
@@ -24,8 +24,7 @@ const AddProduct = ({ children, productID, onAdd }: AddProductProps) => {
 
   const { data } = useProduct(productID, { category_details: true });
 
-  // const { data: categoriesData } = useSWR<IApiResponse>("/categories");
-  const { data: categoriesData } = useCategory();
+  const { data: categoriesData } = useCategories();
 
   const categories = (() => {
     return categoriesData?.docs.map((category: any) => ({

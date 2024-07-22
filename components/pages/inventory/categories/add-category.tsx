@@ -1,23 +1,18 @@
-import { Button, Field, Modal } from "@/components";
-import { useProduct, useStore } from "@/hooks";
-import { classNames, schema } from "@/libs";
-import { uploadProductImageService } from "@/services";
-import { IApiResponse, ICategory, IProduct } from "@/types";
+import React, { ReactNode, useState } from "react";
 import { Formik, FormikHelpers } from "formik";
-import React, { ReactNode, useMemo, useState } from "react";
-import useSWR from "swr";
 import { object } from "yup";
 
+import { Button, Field, Modal } from "@/components";
+import { classNames, schema } from "@/libs";
+import { ICategory } from "@/types";
+
 interface AddCategoryProps {
+  data?: Partial<ICategory>;
   children: (props: { proceed: () => void }) => ReactNode;
-  onAdd: (
-    values: Partial<ICategory>,
-    actions: FormikHelpers<Partial<ICategory>>,
-    hide: () => void
-  ) => void;
+  onAdd: (values: Partial<ICategory>, hide: () => void) => void;
 }
 
-const AddCategory = ({ children, onAdd }: AddCategoryProps) => {
+const AddCategory = ({ children, data, onAdd }: AddCategoryProps) => {
   const [show, setShow] = useState<boolean>(false);
 
   return (
@@ -29,7 +24,7 @@ const AddCategory = ({ children, onAdd }: AddCategoryProps) => {
         onHide={() => {
           setShow(false);
         }}
-        header="Add Category"
+        header={`${data ? "Edit" : "Add"} Category`}
       >
         <Formik
           validateOnMount
@@ -39,11 +34,11 @@ const AddCategory = ({ children, onAdd }: AddCategoryProps) => {
             description: schema.requireString("cAtegory Description"),
           })}
           initialValues={{
-            name: "",
-            description: "",
+            name: data?.name ?? "",
+            description: data?.description ?? "",
           }}
           onSubmit={(values: Partial<ICategory>, actions) => {
-            onAdd(values, actions, () => setShow(false));
+            onAdd(values, () => setShow(false));
           }}
         >
           {({ values, isValid, isSubmitting, handleSubmit }) => (
@@ -53,7 +48,12 @@ const AddCategory = ({ children, onAdd }: AddCategoryProps) => {
               </Field.Group>
 
               <Field.Group required name="description" label="Description">
-                <Field.Input name="description" value={values.description} />
+                <Field.Input
+                  name="description"
+                  as="textarea"
+                  rows="5"
+                  value={values.description}
+                />
               </Field.Group>
 
               <div className="flex gap-8 justify-end mt-16">
@@ -78,7 +78,7 @@ const AddCategory = ({ children, onAdd }: AddCategoryProps) => {
                   disabled={!isValid}
                   {...{ isSubmitting }}
                 >
-                  Add Category
+                  {data ? "Save" : "Add Category"}
                 </Button>
               </div>
             </div>

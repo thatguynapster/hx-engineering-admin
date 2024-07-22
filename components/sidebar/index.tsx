@@ -1,19 +1,35 @@
-import { HomeIcon, UsersIcon } from "@heroicons/react/24/outline";
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
+import { Fragment, useState } from "react";
 import Image from "next/image";
 
 import { usePathname } from "next/navigation";
 import { classNames } from "@/libs";
 import { Icons } from "..";
 import { routes } from "@/routes";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
   {
     name: "Inventory",
-    href: routes.inventory.index,
     icon: Icons.Inventory,
     current: false,
+    subNav: [
+      {
+        name: "Products",
+        href: routes.inventory.products,
+      },
+      {
+        name: "Categories",
+        href: routes.inventory.categories,
+      },
+    ],
   },
   {
     name: "Orders",
@@ -51,7 +67,7 @@ export const Sidebar = ({
             className="relative z-50 lg:hidden"
             onClose={setToggle}
           >
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
               enterFrom="opacity-0"
@@ -61,10 +77,10 @@ export const Sidebar = ({
               leaveTo="opacity-0"
             >
               <div className="fixed inset-0 bg-neutral-gray/50" />
-            </Transition.Child>
+            </TransitionChild>
 
             <div className="fixed inset-0 flex">
-              <Transition.Child
+              <TransitionChild
                 as={Fragment}
                 enter="transition ease-in-out duration-300 transform"
                 enterFrom="-translate-x-full"
@@ -73,10 +89,10 @@ export const Sidebar = ({
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
+                <DialogPanel className="relative mr-16 flex w-full max-w-xs flex-1">
                   <Side {...{ handleActive }} />
-                </Dialog.Panel>
-              </Transition.Child>
+                </DialogPanel>
+              </TransitionChild>
             </div>
           </Dialog>
         </Transition.Root>
@@ -108,22 +124,36 @@ const Side = ({ handleActive }: { handleActive: (key: string) => boolean }) => {
           <li>
             <ul role="list" className="-mx-2 space-y-1">
               {navigation.map((item, i) => (
-                <NavItem key={i} {...{ item, handleActive }} />
+                <div key={i}>
+                  {item.subNav ? (
+                    <NavItem key={i} {...{ item, handleActive }} />
+                  ) : (
+                    <Link
+                      href={item.href || ""}
+                      className={classNames(
+                        handleActive(item.href)
+                          ? "text-primary"
+                          : "text-neutral-40 dark:text-neutral-30",
+                        "text-sm leading-6 font-semibold",
+                        "group hover:text-primary",
+                        "flex items-center gap-x-3",
+                        "rounded-md p-2"
+                      )}
+                    >
+                      <item.icon
+                        className={classNames(
+                          "h-8 w-8 shrink-0",
+                          "group-hover:text-primary"
+                        )}
+                        aria-hidden="true"
+                      />
+                      {item.name}
+                    </Link>
+                  )}
+                </div>
               ))}
             </ul>
           </li>
-          {/* <li className="mt-auto">
-            <a
-              href="#"
-              className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white"
-            >
-              <Cog6ToothIcon
-                className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white"
-                aria-hidden="true"
-              />
-              Settings
-            </a>
-          </li> */}
         </ul>
       </nav>
     </div>
@@ -137,10 +167,15 @@ const NavItem = ({
   item: any;
   handleActive: (key: string) => boolean;
 }) => {
+  const [toggle, setToggle] = useState(() => handleActive(item.href));
+
   return (
-    <li key={item.name}>
-      <a
-        href={item.href}
+    <div>
+      <button
+        type="button"
+        onClick={() => {
+          setToggle(!toggle);
+        }}
         className={classNames(
           handleActive(item.href)
             ? "text-primary"
@@ -151,12 +186,65 @@ const NavItem = ({
           "rounded-md p-2"
         )}
       >
-        <item.icon
-          className={classNames("h-8 w-8 shrink-0", "group-hover:text-primary")}
-          aria-hidden="true"
-        />
-        {item.name}
-      </a>
-    </li>
+        <span>
+          <item.icon
+            className={classNames(
+              "h-8 w-8 shrink-0",
+              "group-hover:text-primary"
+            )}
+            aria-hidden="true"
+          />
+        </span>
+        <div className="flex items-center gap-1">
+          {item.name}
+          <ChevronDownIcon className="w-3 h-3" />
+        </div>
+      </button>
+
+      <motion.div
+        className="overflow-hidden"
+        initial={{ height: "auto", opacity: 1 }}
+        animate={{ height: toggle ? "auto" : 0, opacity: toggle ? 1 : 0 }}
+      >
+        {item.subNav?.map(
+          ({ name, href }: { name: string; href: string }, key: number) => (
+            <Fragment key={key}>
+              <Link
+                href={href}
+                className={classNames(
+                  "px-2",
+                  "rounded-lg",
+                  "flex gap-4 items-center",
+                  handleActive(href)
+                    ? "text-primary bg-primary/10"
+                    : "text-neutral-40 dark:text-neutral-30"
+                )}
+              >
+                <span className="flex items-center justify-center flex-[0_0_20px] h-10 relative">
+                  {key !== 0 && (
+                    <span className="w-[2px] bg-neutral-100 dark:bg-neutral-50 h-5 absolute top-0" />
+                  )}
+
+                  <span
+                    className={classNames(
+                      "w-[6px] h-[6px]",
+                      "rounded-full absolute z-[1]",
+                      handleActive(href)
+                        ? "bg-primary"
+                        : "bg-neutral-200 dark:bg-neutral-50"
+                    )}
+                  />
+
+                  {key + 1 !== item.subNav.length && (
+                    <span className="w-[2px] bg-neutral-100 dark:bg-neutral-50 h-5 absolute bottom-0" />
+                  )}
+                </span>
+                <p className="text-sm font-medium">{name}</p>
+              </Link>
+            </Fragment>
+          )
+        )}
+      </motion.div>
+    </div>
   );
 };
