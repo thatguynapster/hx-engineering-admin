@@ -17,7 +17,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     const user = (await UserCollection.findOne({
       email: loginBody.email,
       is_deleted: false,
-      is_dev: process.env.ENVIRONMENT === "development",
+      // is_dev: process.env.ENVIRONMENT === "development",
     }).lean()) as IUser;
 
     if (!user) {
@@ -66,7 +66,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         name: user.name,
         email: user.email,
         is_deleted: user.is_deleted,
-        is_dev: user.is_dev,
+        // is_dev: user.is_dev,
       },
       process.env.JWT_SECRET!,
       {

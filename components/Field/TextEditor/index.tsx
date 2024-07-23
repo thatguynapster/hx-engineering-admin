@@ -1,6 +1,7 @@
 "use client";
 
 import { EditorContent, useEditor } from "@tiptap/react";
+import ImageResize from "tiptap-extension-resize-image";
 import TextStyle from "@tiptap/extension-text-style";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
@@ -22,6 +23,7 @@ export const TextEditor = ({ content, onChange }: TextEditorProps) => {
   const editor = useEditor({
     extensions: [
       Image.configure({ inline: true, allowBase64: true }),
+      ImageResize,
       TextAlign.configure({
         types: ["paragraph"],
       }),

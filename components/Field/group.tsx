@@ -1,7 +1,7 @@
 import React, { HtmlHTMLAttributes } from "react";
 import styled from "styled-components";
 
-import { Error } from "../error";
+import { Error } from "../form-error";
 import { classNames } from "@/libs";
 
 export interface GroupProps

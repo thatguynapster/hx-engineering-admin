@@ -124,14 +124,14 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
           </Button>
         </div>
 
-        <div className="flex gap-6">
+        {/* <div className="flex gap-6">
           <MenuImageButton
             {...{ editor }}
             onImageSelect={(image: string) => {
               console.log(image);
             }}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="flex gap-6">

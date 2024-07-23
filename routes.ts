@@ -1,8 +1,9 @@
 export const routes = {
   overview: { index: "/dashboard/overview" },
   inventory: {
-    index: "/dashboard/inventory",
+    products: "/dashboard/inventory/products",
     add: "/dashboard/inventory/add",
+    categories: "/dashboard/inventory/categories",
     details: "/dashboard/inventory/:product_id/:tab",
     edit: "/dashboard/inventory/edit",
   },
@@ -38,4 +39,4 @@ export const apiRoutes: string = "/api";
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT: string = routes.inventory.index;
+export const DEFAULT_LOGIN_REDIRECT: string = routes.inventory.products;

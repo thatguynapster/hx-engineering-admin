@@ -71,7 +71,7 @@ const ProductDetails = ({
                   className="flex gap-1 items-center rounded-md text-sm font-medium border border-neutral-30 dark:border-neutral-10"
                   disabled={!!error}
                   onClick={() => {
-                    router.push(routes.inventory.index);
+                    router.push(routes.inventory.products);
                   }}
                 >
                   <ChevronLeftIcon className="w-5 h-5" />
